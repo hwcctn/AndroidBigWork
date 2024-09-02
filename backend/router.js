@@ -1,14 +1,12 @@
 const Router = require("koa-router");
 const router = new Router();
-const { getEvents, addEvent } = require("./controllers/events.controllers");
-const { signIn, signUp } = require("./controllers/auth.controllers");
-const { newTweet } = require("./controllers/tweets.controllers");
+const { signIn, signUp, verify } = require("./controllers/auth.controllers");
+const { newTweet, getTweets, getHotTweets } = require("./controllers/tweets.controllers");
 
-router.get("/events_list", getEvents);
-router.post("/add_event", addEvent);
-router.post("/sign_in", signIn);
-router.post("/sign_up", signUp);
-router.post("/tweet/new", newTweet);
-
+router.post("/api/v1/user/sign_in", signIn);
+router.post("/api/v1/user/sign_up", signUp);
+router.get("/api/v1/user/verify", verify);
+router.post("/api/v1/tweet/new", newTweet);
+router.get("/api/v1/tweet/of/:username", getTweets);
 
 module.exports = router;

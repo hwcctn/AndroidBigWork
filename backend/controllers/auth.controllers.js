@@ -1,3 +1,5 @@
+const { setErr, setOk, Errors } = require("./utils");
+
 const users = new Map()
 users.set("fin", "123456")
 
@@ -7,7 +9,6 @@ sessions.set("eeeeee", "fin")
 
 const signIn = (ctx) => {
     const body = ctx.request.body;
-    console.log(body);
     const password = body.password.toString();
     const username = body.username;
 
@@ -15,12 +16,14 @@ const signIn = (ctx) => {
         const token = Date.now().toString();
         sessions.forEach((v, k, m) => { if (v == username) { m.delete(k) } });
         sessions.set(token, username);
-        ctx.body = { token };
-        ctx.status = 201;
+        setOk(ctx, { token });
         console.log(sessions)
-    }
+    } else if (users.get(username) == undefined)
+        setErr(ctx, "no such user");
+
     else
-        ctx.status = 500;
+        setErr(ctx, "wrong password");
+
 };
 
 const signUp = (ctx) => {
@@ -29,27 +32,37 @@ const signUp = (ctx) => {
     const password = body.password.toString();
     const username = body.username;
 
-    if (users.get(username) == password) {
-        ctx.body = { msg: "user exits" }
-        ctx.status = 500;
-    }
+    if (users.has(username))
+        setErr(ctx, "user exists");
     else {
         users.set(username, password);
         signIn(ctx);
     }
 };
 
+const verify = (ctx) => {
+    const token = ctx.params.token;
+    if (token == undefined) {
+        setErr(ctx);
+        return;
+    }
+    try {
+        const username = auth(token);
+        setOk(ctx, { username });
+    } catch (error) {
+        setErr(ctx);
+    }
+}
+
 const auth = (token) => {
     const username = sessions.get(token);
-    if (username) { return username } else throw ("invalid token");
+    if (username) { return username } else throw (Errors.TokenInvalid);
 };
 
-const Errors = {
-    TokenInvalid: 1,
-}
 
 module.exports = {
     auth,
     signIn,
-    signUp
+    signUp,
+    verify,
 };
