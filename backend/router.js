@@ -9,4 +9,5 @@ router.get("/api/v1/user/verify", verify);
 router.post("/api/v1/tweet/new", newTweet);
 router.get("/api/v1/tweet/of/:username", getTweets);
 
+
 module.exports = router;
