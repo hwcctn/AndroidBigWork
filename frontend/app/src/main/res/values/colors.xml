@@ -2,4 +2,14 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="hot">#EFB2BE</color>
+    <color name="person">#C9379D</color>
+    <color name="dynamic">#AE7E0F</color>
+    <color name="profile">#5B37B7</color>
+
+    <color name="home_20">#331194AA</color>
+    <color name="like_20">#33C9379D</color>
+    <color name="notification_20">#33AE7E0F</color>
+    <color name="profile_20">#335B37B7</color>
+
 </resources>
