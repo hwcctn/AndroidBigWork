@@ -1,0 +1,20 @@
+[project]
+name = "image-services"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "cv>=1.0.0",
+    "setuptools>=74.1.1",
+    "vit-pytorch>=1.7.12",
+    "open-clip-torch>=2.26.1",
+    "pymilvus>=2.4.6",
+    "fastapi>=0.112.2",
+    "python-multipart>=0.0.9",
+    "uvicorn>=0.30.6",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

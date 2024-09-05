@@ -14,4 +14,9 @@
 .cxx
 local.properties
 node_modules
-image_cache
+images_cache
+images_upload
+.venv
+*.db
+__pycache__
+

@@ -4,14 +4,20 @@ import os
 import shutil
 import logging
 
+import image_searching as img_vec
+
 # Directory to store uploaded images
-UPLOAD_DIR = 'image_cache'
+UPLOAD_DIR = 'images_upload'
+CACHE_DIR = 'images_cache'
 
 # Function to clear the upload directory
 def clear_upload_dir():
     if os.path.exists(UPLOAD_DIR):
         shutil.rmtree(UPLOAD_DIR)
     os.makedirs(UPLOAD_DIR)
+    if os.path.exists(CACHE_DIR):
+        shutil.rmtree(CACHE_DIR)
+    os.makedirs(CACHE_DIR)
 
 # Ensure the upload directory exists and is cleared
 clear_upload_dir()
@@ -24,13 +30,27 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 @app.post("/api/v1/image/upload")
-async def upload_image(file: UploadFile = File(...)):
+async def upload_image(file: UploadFile = File(...), subject: str = 'unspecified'):
     try:
         file_path = os.path.join(UPLOAD_DIR, file.filename)
         with open(file_path, "wb") as buffer:
             shutil.copyfileobj(file.file, buffer)
         logger.info(f"File uploaded successfully: {file.filename}")
+        img_vec.insert_image(UPLOAD_DIR, file.filename, subject)
         return {"filename": file.filename}
+    except Exception as e:
+        logger.error(f"Error uploading file: {e}")
+        raise HTTPException(status_code=500, detail="Internal Server Error")
+
+@app.post("/api/v1/image/search")
+async def upload_image(file: UploadFile = File(...)):
+    try:
+        file_path = os.path.join(CACHE_DIR, file.filename)
+        with open(file_path, "wb") as buffer:
+            shutil.copyfileobj(file.file, buffer)
+        logger.info(f"File uploaded successfully: {file.filename}")
+        result = img_vec.search_image(file_path, limit=5)
+        return result
     except Exception as e:
         logger.error(f"Error uploading file: {e}")
         raise HTTPException(status_code=500, detail="Internal Server Error")
@@ -46,4 +66,4 @@ async def get_image(filename: str):
 # Run the server using Uvicorn
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="localhost", port=8080)
+    uvicorn.run(app, host="localhost", port=8002)
