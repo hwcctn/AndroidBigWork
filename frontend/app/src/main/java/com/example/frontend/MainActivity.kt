@@ -56,7 +56,7 @@ class MainActivity : AppCompatActivity() {
                     .setReorderingAllowed(true)
                     .replace(R.id.fragment_container, DynamicFragment())
                     .commit()
-git
+
                 // 设置其他按钮为未选中状态
                 hotLayout.setBackgroundResource(R.drawable.front_border);
                 personLayout.setBackgroundResource(R.drawable.front_border);
