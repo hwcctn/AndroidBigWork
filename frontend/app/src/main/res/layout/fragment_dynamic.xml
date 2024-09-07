@@ -5,13 +5,12 @@
     android:layout_height="match_parent"
     android:background="@color/dynamic"
     tools:context=".DynamicFragment">
-    <TextView
+
+
+    <!-- RecyclerView 用于展示卡片列表 -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="动态"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:textColor="@color/black"
-        />
+        android:padding="8dp" />
 </FrameLayout>
