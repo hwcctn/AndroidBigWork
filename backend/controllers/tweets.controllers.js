@@ -1,76 +1,96 @@
-const { auth, Errors } = require("./auth.controllers");
-const { setOk, setErr } = require("./utils");
-
-const tweets = new Map()
-var id = 0;
-/*
-Tweet {
-    id,
-    date,
-    title,
-    content,
-    viewd,
-    tags,
-    images,
-}
-*/
+const { auth } = require("./auth.controllers");
+const { setOk, setErr, tweets, id, user_datas, connections } = require("./utils");
 
 
 const pushTweet = (token, tweet) => {
-    const user = auth(token)
-    const old = tweets.get(user)
-    if (old) {
-        old.push(tweet)
-    } else {
-        tweets.set(user, [tweet])
-    }
+    const user = auth(token);
+    tweets.set(id, tweet);
+    id += 1;
+
+    return id - 1;
 }
 
 const newTweet = (ctx) => {
     try {
         const token = ctx.request.headers.token;
         const content = ctx.request.body.content;
+        const tags = ctx.request.body.tags;
+        const images = ctx.request.body.images;
         const title = ctx.request.body.title;
-        pushTweet(token, {
-            content,
-            id,
-            date: Date.now(),
-            title,
-            viewd: 0,
-            tags: [],
-            images: [],
-        });
-        id += 1;
-        setOk(ctx);
+        const sender = auth(token);
+
+        if (!token) {
+            setErr(ctx, "Unauthorized", 401);
+            return;
+        }
+
+        if (content && title && tags && images) {
+            const tweet = {
+                date: Date.now(),
+                title,
+                sender,
+                content,
+                tags,
+                images,
+            };
+            pushTweet(token, tweet);
+            pushUpdate(tweet);
+        } else {
+            setErr(ctx, "Unauthorized", 400);
+            return;
+        }
+
+        setOk(ctx, id);
     } catch (e) {
         console.log(`fuck you ${e}`);
         setErr(ctx, "unknown error");
     }
+
     console.log(tweets)
 }
 
-const getTweets = (ctx) => {
-    const username = ctx.params.username;
-    console.log(ctx);
-    if (username == undefined) {
-        setErr(ctx, "required parameter: username");
-        return;
-    }
-    const ts = tweets.get(username);
-    if (ts)
-        setOk(ctx, ts);
-    else
-        setOk(ctx, []);
+// push update to all the connections
+const pushUpdate = (tweet) => {
+    const fans = user_datas.get(tweet.sender).fans;
+    fans.forEach(fan => {
+        const conn = connections.get(fan);
+        conn.send(tweet);
+    });
 }
 
 const getHotTweets = (ctx) => {
-    const page_size = ctx.params.size;
-    const page_offset = ctx.params.offset;
+}
+
+// a tweet is clicked, viewd += 1
+const beClicked = (ctx) => {
+    try {
+        const token = ctx.request.headers.token;
+        const tweet_id = ctx.request.params.id;
+        if (!tweet_id) {
+            setErr(ctx, "Require parameter: id", 400);
+        }
+        if (token) {
+            const sender = auth(token);
+            const tweet = tweets.get(tweet_id);
+            if (tweet) {
+                tweet.viewd += 1;
+            } else {
+                setErr(ctx, "Invalid token", 400);
+                return;
+            }
+        } else {
+            setErr(ctx, "Unauthorized", 401);
+            return;
+        }
+    } catch (e) {
+        console.log(e);
+        setErr(ctx, "Unauthorized", 401);
+    }
 }
 
 
 module.exports = {
+    beClicked,
     newTweet,
-    getTweets,
     getHotTweets,
 }

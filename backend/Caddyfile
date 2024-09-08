@@ -1,0 +1,9 @@
+:8000
+
+
+route /api/v1/* {
+    route /image/* {
+        reverse_proxy to localhost:8002
+    }
+    reverse_proxy to localhost:8001
+}

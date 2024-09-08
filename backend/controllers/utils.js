@@ -19,8 +19,45 @@ const Errors = {
     TokenInvalid: 1,
 }
 
+
+const user_datas = new Map();
+
+user_datas.set('fin', {
+    fans: [],
+    follows: ['julia'],
+    // id of tweets
+    tweets: [],
+});
+
+user_datas.set('julia', {
+    fans: ['fin'],
+    follows: [],
+    // id of tweets
+    tweets: [],
+});
+
+const tweets = new Map();
+var id = 0;
+/*
+Tweet {
+    date,
+    title,
+    sender,
+    content: []string,
+    viewd,
+    tags: []string,
+    images: []string,
+}
+*/
+
+const connections = new Map();
+
 module.exports = {
+    connections,
     setErr,
     setOk,
     Errors,
+    user_datas,
+    tweets,
+    id,
 }
