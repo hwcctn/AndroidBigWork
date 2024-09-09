@@ -34,6 +34,7 @@ const signUp = (ctx) => {
     console.log(body);
     const password = body.password.toString();
     const username = body.username;
+    const avatar = body.avatar;
 
     if (passwords.has(username))
         setErr(ctx, "user exists");

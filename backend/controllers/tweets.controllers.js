@@ -58,7 +58,21 @@ const pushUpdate = (tweet) => {
     });
 }
 
+// get 10 highest viewd post 
 const getHotTweets = (ctx) => {
+    let result = [];
+
+    tweets.forEach((v, k) => {
+        result.push({ id: k, tweet: v });
+    });
+
+    tweets.sort((x, y) => {
+        if (x > y) return 1
+        else if (x < y) return -1
+        else 0;
+    });
+    const tmp = tweets.slice(0, Math.min(result.length, 10));
+    setOk(ctx, tmp);
 }
 
 // a tweet is clicked, viewd += 1

@@ -34,6 +34,7 @@ user_datas.set('julia', {
     follows: [],
     // id of tweets
     tweets: [],
+    avatar: null,
 });
 
 const tweets = new Map();
