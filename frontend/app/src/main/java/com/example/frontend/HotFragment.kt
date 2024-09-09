@@ -35,6 +35,7 @@ class HotFragment : Fragment() {
             MyItem(MyAdapter.TYPE_HALF_SPAN, "Half Span Item 2"),
             MyItem(MyAdapter.TYPE_THIRD_SPAN, "Third Span Item 1"),
             MyItem(MyAdapter.TYPE_THIRD_SPAN, "Third Span Item 2"),
+            MyItem(MyAdapter.TYPE_THIRD_SPAN, "Third Span Item 3"),
             MyItem(MyAdapter.TYPE_FULL_SPAN, "Full Span Item 2")
         )
 
