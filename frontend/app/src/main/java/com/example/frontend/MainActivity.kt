@@ -1,15 +1,10 @@
 package com.example.frontend
 
 import android.os.Bundle
-import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.fragment.app.Fragment
 
 class MainActivity : AppCompatActivity() {
     private var selectedTab: Int = 1
@@ -54,7 +49,7 @@ class MainActivity : AppCompatActivity() {
                 //设置界面
                 supportFragmentManager.beginTransaction()
                     .setReorderingAllowed(true)
-                    .replace(R.id.fragment_container, DynamicFragment())
+                    .replace(R.id.fragment_container, TweetDemonstration())
                     .commit()
 
                 // 设置其他按钮为未选中状态
