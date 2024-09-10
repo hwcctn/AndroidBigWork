@@ -16,14 +16,16 @@ const signIn = (ctx) => {
     const username = body.username;
 
     if (passwords.get(username) == password) {
-        const token = Date.now().toString();
+        const crypto = require('crypto');
+
+        // 生成更随机的 token
+        const token = crypto.randomBytes(16).toString('hex');
         sessions.forEach((v, k, m) => { if (v == username) { m.delete(k) } });
         sessions.set(token, username);
         setOk(ctx, { token });
         console.log(sessions)
     } else if (passwords.get(username) == undefined)
         setErr(ctx, "no such user");
-
     else
         setErr(ctx, "wrong password");
 
@@ -31,7 +33,6 @@ const signIn = (ctx) => {
 
 const signUp = (ctx) => {
     const body = ctx.request.body;
-    console.log(body);
     const password = body.password.toString();
     const username = body.username;
     const avatar = body.avatar;
@@ -40,13 +41,13 @@ const signUp = (ctx) => {
         setErr(ctx, "user exists");
     else {
         passwords.set(username, password);
-        userdata.set(username, { tweets: [], fans: [], follows: [] });
+        user_datas.set(username, { tweets: [], fans: [], follows: [] });
         signIn(ctx);
     }
 };
 
 const verify = (ctx) => {
-    const token = ctx.params.token;
+    const token = ctx.request.body.token;
     if (token == undefined) {
         setErr(ctx);
         return;
@@ -55,7 +56,7 @@ const verify = (ctx) => {
         const username = auth(token);
         setOk(ctx, { username });
     } catch (error) {
-        setErr(ctx);
+        setErr(ctx, "token invalid", 401);
     }
 }
 
