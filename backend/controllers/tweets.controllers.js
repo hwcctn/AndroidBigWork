@@ -1,14 +1,42 @@
 const { auth } = require("./auth.controllers");
-const { setOk, setErr, tweets, id, user_datas, connections } = require("./utils");
+let { setOk, setErr, tweets, id, user_datas, connections } = require("./utils");
 
 
 const pushTweet = (token, tweet) => {
     const user = auth(token);
-    tweets.set(id, tweet);
+    console.log(`id: ${id}`);
+    tweets.push(tweet);
     id += 1;
 
     return id - 1;
 }
+
+pushTweet("fin", {
+    date: Date.now(),
+    title: "title",
+    sender: "fin",
+    content: ["content"],
+    tags: ["tag1", "tag2"],
+    images: ["img1", "img2"],
+});
+
+pushTweet("fin", {
+    date: Date.now(),
+    title: "title",
+    sender: "fin",
+    content: ["content"],
+    tags: ["tag1", "tag2"],
+    images: ["img1", "img2"],
+});
+
+pushTweet("fin", {
+    date: Date.now(),
+    title: "title",
+    sender: "fin",
+    content: ["content"],
+    tags: ["tag1", "tag2"],
+    images: ["img1", "img2"],
+});
 
 const newTweet = (ctx) => {
     try {
@@ -34,7 +62,7 @@ const newTweet = (ctx) => {
                 images,
             };
             pushTweet(token, tweet);
-            pushUpdate(tweet);
+            // pushUpdate(tweet);
         } else {
             setErr(ctx, "Unauthorized", 400);
             return;
@@ -52,13 +80,44 @@ const newTweet = (ctx) => {
 // push update to all the connections
 const pushUpdate = (tweet) => {
     const fans = user_datas.get(tweet.sender).fans;
+    console.log(`connections: `, connections)
+    console.log(`fans: `, fans)
     fans.forEach(fan => {
         const conn = connections.get(fan);
+        // console.log(conn)
         conn.send(tweet);
     });
 }
 
+const getTweetById = (ctx) => {
+    const id = ctx.request.params.id;
+    if (id == undefined) {
+        setErr(ctx, "bad request", 400);
+        return;
+    }
+    const data = tweets[id];
+    if (data)
+        setOk(ctx, data);
+    else
+        setErr(ctx, `no such tweet: ${id}`)
+}
+
+
+// get 10 highest viewd post 
 const getHotTweets = (ctx) => {
+    let result = [];
+
+    tweets.forEach((v, i) => {
+        result.push({ id: i, tweet: v });
+    });
+
+    result.sort((x, y) => {
+        if (x > y) return 1
+        else if (x < y) return -1
+        else 0;
+    });
+    const tmp = result.slice(0, Math.min(result.length, 10));
+    setOk(ctx, tmp);
 }
 
 // a tweet is clicked, viewd += 1
@@ -71,11 +130,14 @@ const beClicked = (ctx) => {
         }
         if (token) {
             const sender = auth(token);
-            const tweet = tweets.get(tweet_id);
+            const tweet = tweets[tweet_id];
+            console.log(tweets);
+            console.log(`tweet_id: ${tweet_id}`);
+            console.log(`tweet: ${tweet}`);
             if (tweet) {
                 tweet.viewd += 1;
             } else {
-                setErr(ctx, "Invalid token", 400);
+                setErr(ctx, "Invalid tweet id", 400);
                 return;
             }
         } else {
@@ -92,5 +154,6 @@ const beClicked = (ctx) => {
 module.exports = {
     beClicked,
     newTweet,
+    getTweetById,
     getHotTweets,
 }

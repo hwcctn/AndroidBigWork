@@ -15,7 +15,7 @@ const getFans = (ctx) => {
         setErr(ctx, `no such user: ${username}`)
 }
 
-const getTweets = (ctx) => {
+const getTweetsOf = (ctx) => {
     const username = ctx.params.username;
     if (username == undefined) {
         setErr(ctx, "required parameter: username");
@@ -107,7 +107,7 @@ const listenUpdate = (ctx) => {
 module.exports = {
     listenUpdate,
     getFans,
-    getTweets,
+    getTweetsOf,
     getFollows,
     subscribe,
     unsubscribe,

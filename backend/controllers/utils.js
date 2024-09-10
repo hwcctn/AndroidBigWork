@@ -20,23 +20,25 @@ const Errors = {
 }
 
 
-const user_datas = new Map();
+var user_datas = new Map();
 
 user_datas.set('fin', {
     fans: [],
     follows: ['julia'],
     // id of tweets
-    tweets: [],
+    tweets: [0, 2],
+    avatar: null,
 });
 
 user_datas.set('julia', {
     fans: ['fin'],
     follows: [],
     // id of tweets
-    tweets: [],
+    tweets: [1],
+    avatar: null,
 });
 
-const tweets = new Map();
+var tweets = [];
 var id = 0;
 /*
 Tweet {
@@ -50,7 +52,7 @@ Tweet {
 }
 */
 
-const connections = new Map();
+var connections = new Map();
 
 module.exports = {
     connections,
