@@ -30,7 +30,7 @@ class ImageAdapter : ListAdapter<Uri, ImageAdapter.ImageViewHolder>(DiffCallback
 
     // 内部类 ImageViewHolder，继承自 RecyclerView.ViewHolder，用于存储每个图片项的视图引用
     class ImageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        // 通过 itemView.findViewById 获取布局中的 ImageView，用来显示图片
+
         private val imageView: ImageView = itemView.findViewById(R.id.imageView)
 
         // 将图片的 Uri 绑定到 ImageView 上，显示图片
