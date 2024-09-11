@@ -41,6 +41,19 @@ const getFollows = (ctx) => {
         setErr(ctx, `no such user: ${username}`)
 }
 
+const getAvatar = (ctx) => {
+    const username = ctx.params.username;
+    if (username == undefined) {
+        setErr(ctx, "required parameter: username");
+        return;
+    }
+    const data = user_datas.get(username);
+    if (data)
+        setOk(ctx, data.avatar);
+    else
+        setErr(ctx, `avatar of ${username} no found`);
+}
+
 const subscribe = (ctx) => {
     try {
         const username = auth(ctx.headers.token);
@@ -111,4 +124,5 @@ module.exports = {
     getFollows,
     subscribe,
     unsubscribe,
+    getAvatar,
 }
