@@ -20,39 +20,23 @@ class HotFragment : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        // 获取RecyclerView
+        val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerViewHotItems)
 
-        // 获取 RecyclerView 引用
-        val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
+        // 设置网格布局管理器，2列
+        recyclerView.layoutManager = GridLayoutManager(context, 2)
 
-        // 设置 GridLayoutManager，列数为6
-        val gridLayoutManager = GridLayoutManager(requireContext(), 6)
-        recyclerView.layoutManager = gridLayoutManager
-
-        // 设置数据源
-        val itemList = listOf(
-            MyItem(MyAdapter.TYPE_FULL_SPAN, "Full Span Item 1"),
-            MyItem(MyAdapter.TYPE_HALF_SPAN, "Half Span Item 1"),
-            MyItem(MyAdapter.TYPE_HALF_SPAN, "Half Span Item 2"),
-            MyItem(MyAdapter.TYPE_THIRD_SPAN, "Third Span Item 1"),
-            MyItem(MyAdapter.TYPE_THIRD_SPAN, "Third Span Item 2"),
-            MyItem(MyAdapter.TYPE_THIRD_SPAN, "Third Span Item 3"),
-            MyItem(MyAdapter.TYPE_FULL_SPAN, "Full Span Item 2")
+        // 创建一些假数据
+        val hotItems = listOf(
+            HotItem("jj", "img", "is my img", listOf("img1", "img1")),
+            HotItem("mike", "img", "is my img", listOf("img1")),
+            HotItem("anna", "photo", "some content", listOf("img1", "img1")),
+            HotItem("bob", "art", "another content", listOf("img1"))
         )
 
-        // 初始化适配器
-        val adapter = MyAdapter(itemList)
-        recyclerView.adapter = adapter
-
-        // 动态设置每个 item 占用的列数
-        gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
-            override fun getSpanSize(position: Int): Int {
-                return when (adapter.getItemViewType(position)) {
-                    MyAdapter.TYPE_FULL_SPAN -> 6  // 占满6列
-                    MyAdapter.TYPE_HALF_SPAN -> 3   // 占满3列
-                    MyAdapter.TYPE_THIRD_SPAN -> 2  // 占满2列
-                    else -> 3             // 默认3列
-                }
-            }
-        }
+        // 创建并设置适配器
+        val hotAdapter = HotAdapter(hotItems)
+        recyclerView.adapter = hotAdapter
     }
-}
+        }
+
