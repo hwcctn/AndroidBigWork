@@ -12,6 +12,7 @@ import okhttp3.MultipartBody
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.Body
+import retrofit2.http.Header
 import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.Part
@@ -34,5 +35,6 @@ interface ApiService {
 
 
     @POST("/api/v1/tweet/new")
-    fun postNewTweet(@Body request: NewTweetRequest): Call<NewTweetResponse>
+    fun postNewTweet(@Body request: NewTweetRequest,
+                     @Header("token") token: String): Call<NewTweetResponse>
 }

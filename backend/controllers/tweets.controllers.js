@@ -62,6 +62,8 @@ const newTweet = (ctx) => {
                 images,
             };
             pushTweet(token, tweet);
+            console.log(tweets)
+
             // pushUpdate(tweet);
         } else {
             setErr(ctx, "Unauthorized", 400);
@@ -74,7 +76,6 @@ const newTweet = (ctx) => {
         setErr(ctx, "unknown error");
     }
 
-    console.log(tweets)
 }
 
 // push update to all the connections
