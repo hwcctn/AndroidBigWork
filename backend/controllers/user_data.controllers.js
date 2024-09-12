@@ -112,8 +112,9 @@ const unsubscribe = (ctx) => {
 const listenUpdate = (ctx) => {
     try {
         connections.set(auth(ctx.headers.token), ctx);
+        console.log(connections)
     } catch (err) {
-        setErr(ctx, err, 401);
+        setErr(ctx, "Unauthorized", 401);
     }
 };
 
