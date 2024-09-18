@@ -2,28 +2,39 @@ package com.example.frontend
 import android.Manifest
 
 
-
+import okhttp3.MediaType.parse;
 import android.app.Activity
+import android.content.ContentResolver
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.provider.OpenableColumns
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.frontend.api.models.ImageUploadResponse
 import com.example.frontend.api.models.RegisterRequest
 import com.example.frontend.api.models.RegisterResponse
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.File
+import java.io.FileOutputStream
+import java.io.InputStream
+
 class RegisterActivity :AppCompatActivity(){
     private lateinit var imageViewProfile: ImageView
     private val IMAGE_PICK_CODE = 1000
     private val PERMISSION_CODE = 1001
-
+    private var selectedImage: Uri? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -55,48 +66,99 @@ class RegisterActivity :AppCompatActivity(){
 
         registerButton.setOnClickListener {
 
+
             val username = usernameEditText.text.toString()
             val password = passwordEditText.text.toString()
             val passwordcf = passwordcfEditText.text.toString()
+            var avatar:String=""
+            selectedImage?.let { uri ->
+                avatar = getFileName(uri)
+            }
 
             if (username.isNotEmpty() && password.isNotEmpty()&&passwordcf.isNotEmpty()) {
+                if (password == passwordcf) {
+                    upload_img(object : UploadCallback {
+                        override fun onSuccess(filename: String) {
+                            // 处理成功上传后的逻辑
+                            Log.d("Upload", "Upload successful, filename: $filename")
+                            val registerRequest = RegisterRequest(username, password,avatar)
 
-                val registerRequest = RegisterRequest(username, password)
+                            RetrofitInstance.api.register(registerRequest)
+                                .enqueue(object : Callback<RegisterResponse> {
+
+                                    override fun onResponse(
+                                        call: Call<RegisterResponse>,
+                                        response: Response<RegisterResponse>
+                                    ) {
+
+                                        if (response.isSuccessful) {
+                                            // 获取服务器返回的 registerresponse 数据
+                                            val registerResponse = response.body()
 
 
-                RetrofitInstance.api.register(registerRequest).enqueue(object:Callback<RegisterResponse> {
+                                            if (registerResponse != null && registerResponse.content.token.isNotEmpty()) {
 
-                    override fun onResponse(call: Call<RegisterResponse>, response: Response<RegisterResponse>) {
+                                                startActivity(
+                                                    Intent(
+                                                        this@RegisterActivity,
+                                                        LoginActivity::class.java
+                                                    )
+                                                )
+                                            } else {
 
-                        if (response.isSuccessful) {
-                            // 获取服务器返回的 registerresponse 数据
-                            val registerResponse = response.body()
+                                                Toast.makeText(
+                                                    this@RegisterActivity,
+                                                    "注册失败: ${registerResponse?.reuslt}",
+                                                    Toast.LENGTH_SHORT
+                                                ).show()
+                                            }
+                                        } else {
+
+                                            Toast.makeText(
+                                                this@RegisterActivity,
+                                                "注册失败: ${response.message()}",
+                                                Toast.LENGTH_SHORT
+                                            ).show()
+                                        }
+                                    }
 
 
-                            if (registerResponse != null && registerResponse.token.isNotEmpty()) {
+                                    override fun onFailure(call: Call<RegisterResponse>, t: Throwable) {
 
-                                startActivity(Intent(this@RegisterActivity, LoginActivity::class.java))
-                            } else {
-
-                                Toast.makeText(this@RegisterActivity, "登录失败: ${registerResponse?.message}", Toast.LENGTH_SHORT).show()
-                            }
-                        } else {
-
-                            Toast.makeText(this@RegisterActivity, "登录失败: ${response.message()}", Toast.LENGTH_SHORT).show()
+                                        Toast.makeText(
+                                            this@RegisterActivity,
+                                            "网络错误: ${t.message}",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    }
+                                })
                         }
-                    }
 
+                        override fun onFailure() {
+                            // 处理上传失败后的逻辑
+                            Log.d("Upload", "Upload failed")
+                        }
+                    })
 
-                    override fun onFailure(call: Call<RegisterResponse>, t: Throwable) {
-
-                        Toast.makeText(this@RegisterActivity, "网络错误: ${t.message}", Toast.LENGTH_SHORT).show()
-                    }
-                })
-            } else {
-                // 如果用户名或密码为空，提示用户输入
-                Toast.makeText(this@RegisterActivity, "用户名或密码不能为空", Toast.LENGTH_SHORT).show()
+                }
+                else{
+                    // 密码不相同提示
+                    Toast.makeText(
+                        this@RegisterActivity,
+                        "两次密码输入不一样",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                } else {
+                    // 如果用户名或密码为空，提示用户输入
+                    Toast.makeText(
+                        this@RegisterActivity,
+                        "用户名或密码不能为空",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
-        }
+
         // 跳转到 RegisterActivity
         signInTextView.setOnClickListener {
             val intent = Intent(this@RegisterActivity, LoginActivity::class.java)
@@ -126,7 +188,73 @@ class RegisterActivity :AppCompatActivity(){
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE) {
             imageViewProfile.setImageURI(data?.data)
+            selectedImage=data?.data
 
+
+        }
+    }
+    // 将 URI 转换为文件
+    private fun uriToFile(uri: Uri): File {
+        val contentResolver: ContentResolver = contentResolver
+        val fileName = getFileName(uri)
+        val file = File(cacheDir, fileName)
+        val inputStream: InputStream? = contentResolver.openInputStream(uri)
+        val outputStream = FileOutputStream(file)
+        inputStream?.use { input ->
+            outputStream.use { output ->
+                input.copyTo(output)
+            }
+        }
+        return file
+    }
+
+    // 获取文件名
+    private fun getFileName(uri: Uri): String {
+        var name = ""
+        val returnCursor = contentResolver.query(uri, null, null, null, null)
+        if (returnCursor != null) {
+            val nameIndex = returnCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+            returnCursor.moveToFirst()
+            name = returnCursor.getString(nameIndex)
+            returnCursor.close()
+        }
+        return name
+    }
+    interface UploadCallback {
+        fun onSuccess(filename: String)
+        fun onFailure()
+    }
+
+    private fun upload_img(callback: UploadCallback) {
+        Log.e("1", "1")
+        selectedImage?.let { uri ->
+            val file = uriToFile(uri)
+            Log.d("File Path", file.absolutePath)
+            val requestFile = RequestBody.create(MultipartBody.FORM, file)
+            val body = MultipartBody.Part.createFormData("file", file.name, requestFile)
+            val call = ImageRetrofitInstance.api.uploadImage(body)
+
+            call.enqueue(object : Callback<ImageUploadResponse> {
+                override fun onResponse(
+                    call: Call<ImageUploadResponse>,
+                    response: Response<ImageUploadResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        val filename = response.body()?.filename ?: ""
+                        callback.onSuccess(filename)
+                    } else {
+                        Log.e("3", "3")
+                        callback.onFailure()
+                    }
+                }
+
+                override fun onFailure(call: Call<ImageUploadResponse>, t: Throwable) {
+                    Log.e("Upload Error", "Unable to get response")
+                    Log.e("Upload Error", "Error message: ${t.message}")
+                    t.printStackTrace()
+                    callback.onFailure()
+                }
+            })
         }
     }
 

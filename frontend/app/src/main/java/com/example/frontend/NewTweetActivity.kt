@@ -27,6 +27,7 @@ import retrofit2.Response
 import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStream
+import kotlin.math.log
 
 // 定义一个继承自 AppCompatActivity 的类 NewTweetActivity
 class NewTweetActivity : AppCompatActivity() {
@@ -39,33 +40,33 @@ class NewTweetActivity : AppCompatActivity() {
     private var selectedImages: List<Uri> = emptyList()
 
     // 定义一个图片选择器，允许用户选择多个图片
-    // registerForActivityResult 是用于处理 Android 系统返回的结果
+
     private val imagePickerLauncher =
         registerForActivityResult(ActivityResultContracts.GetMultipleContents()) { uris ->
             uris?.let {
-                // 如果用户选择了图片，将图片的 URI 列表传给 ImageAdapter 显示
+
                 imageAdapter.submitList(uris)
                 selectedImages = uris
             }
         }
 
-    // 当 Activity 创建时调用此方法，设置布局
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // 使用 View Binding 将 XML 布局文件 `fragment_new_tweet.xml` 绑定到这个 Activity 中
+
         _binding = ActivityNewTweetBinding.inflate(layoutInflater)
         setContentView(binding.root)  // 设置 Activity 的根视图
 
-        // 初始化图片适配器 ImageAdapter，用于显示图片列表
+
         imageAdapter = ImageAdapter()
 
-        // 设置 RecyclerView 的适配器为 imageAdapter
+
         binding.recyclerViewImages.adapter = imageAdapter
 
-        // 设置 RecyclerView 的布局管理器为 GridLayoutManager，显示 3 列的网格布局
+
         binding.recyclerViewImages.layoutManager = GridLayoutManager(this, 3)
 
-        // 为上传图片按钮设置点击事件，点击时打开图片选择器
+
         binding.buttonUploadImage.setOnClickListener {
             openImagePicker()  // 调用 openImagePicker 方法，启动图片选择器
         }
@@ -75,8 +76,9 @@ class NewTweetActivity : AppCompatActivity() {
         }
 
 
-        // 为发布按钮设置点击事件，点击时发布推文
+
         binding.buttonPost.setOnClickListener {
+            Log.e("fasong","发送")
             postTweet()
         }
 
@@ -89,11 +91,13 @@ class NewTweetActivity : AppCompatActivity() {
 
     // 发布推文
     private fun postTweet() {
+        Log.e("1","1")
         val uploadedFilenames = mutableListOf<String>()
 
         selectedImages.forEach { uri ->
             val file = uriToFile(uri)
             val requestFile = RequestBody.create(parse("multipart/form-data"), file)
+
             val body = MultipartBody.Part.createFormData("file", file.name, requestFile)
 
             val call = ImageRetrofitInstance.api.uploadImage(body)
@@ -110,9 +114,11 @@ class NewTweetActivity : AppCompatActivity() {
 
                         // 检查是否所有图片都上传完毕
                         if (uploadedFilenames.size == selectedImages.size) {
+                            Log.e("2","2")
                             sendNewTweet(uploadedFilenames)
                         }
                     } else {
+                        Log.e("3","3")
                         // 处理上传错误
                     }
                 }
@@ -163,7 +169,10 @@ class NewTweetActivity : AppCompatActivity() {
             images = uploadedFilenames
         )
 
-        val call = RetrofitInstance.api.postNewTweet(newTweetRequest, "fin")
+        val sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE)
+        val token = sharedPreferences.getString("token", null)
+        Log.d("Token", "Stored token: $token")
+        val call = RetrofitInstance.api.postNewTweet(newTweetRequest, token.toString())
         call.enqueue(object : Callback<NewTweetResponse> {
             override fun onResponse(
                 call: Call<NewTweetResponse>,
@@ -171,6 +180,9 @@ class NewTweetActivity : AppCompatActivity() {
             ) {
                 if (response.isSuccessful) {
                     // 处理发布成功
+                    Log.d("sucessful", "sucessful")
+                    onBackPressed()
+
                 } else {
                     // 处理发布错误
                 }

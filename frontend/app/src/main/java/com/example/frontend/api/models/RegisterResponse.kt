@@ -1,6 +1,9 @@
 package com.example.frontend.api.models
 
 data class RegisterResponse(
-    val message: String,
-    val token: String
+    val reuslt:Int,
+    val content:TokenContent
+)
+data class TokenContent(
+    val token:String
 )

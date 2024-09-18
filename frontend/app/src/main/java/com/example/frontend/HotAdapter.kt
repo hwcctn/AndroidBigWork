@@ -27,9 +27,9 @@ class HotAdapter(private val hotItemList: List<HotItem>) :
 
     override fun onBindViewHolder(holder: HotViewHolder, position: Int) {
         val currentItem = hotItemList[position]
-        holder.nameTextView.text = currentItem.name
+        holder.nameTextView.text = currentItem.sender
         holder.titleTextView.text = currentItem.title
-        holder.contentTextView.text = currentItem.content
+        holder.contentTextView.text = currentItem.content.toString()
 
         // 设置图片RecyclerView
         val imageAdapter = HotImageAdapter(currentItem.images)

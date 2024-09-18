@@ -12,6 +12,7 @@ import com.example.frontend.api.models.LoginResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import kotlin.math.log
 
 
 class LoginActivity : AppCompatActivity() {
@@ -46,7 +47,14 @@ class LoginActivity : AppCompatActivity() {
                             if (loginResponse != null) {
 
                                 if (!loginResponse.content.token.isNullOrEmpty()) {
+                                    // 存储token
+                                    val sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE)
+                                    val editor = sharedPreferences.edit()
+                                    editor.putString("token",loginResponse.content.token)
+                                    editor.apply()
 
+                                    val token = sharedPreferences.getString("token", null)
+                                    Log.d("Token", "Stored token: $token")
                                     startActivity(Intent(this@LoginActivity, MainActivity::class.java))
                                 } else {
 
