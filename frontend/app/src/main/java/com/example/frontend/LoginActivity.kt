@@ -51,10 +51,12 @@ class LoginActivity : AppCompatActivity() {
                                     val sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE)
                                     val editor = sharedPreferences.edit()
                                     editor.putString("token",loginResponse.content.token)
+                                    editor.putString("name",username)
                                     editor.apply()
 
                                     val token = sharedPreferences.getString("token", null)
-                                    Log.d("Token", "Stored token: $token")
+                                    val username = sharedPreferences.getString("username", null)
+                                    Log.d("Token_and_Name", "Stored token: $token,name:$username")
                                     startActivity(Intent(this@LoginActivity, MainActivity::class.java))
                                 } else {
 

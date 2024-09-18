@@ -8,7 +8,7 @@ val title: String,
 val sender: String,
 val content: List<String>,
 val tags: List<String>,
-val images: List<String>
-
+val images: List<String>,
+var isFollowing:Boolean
 
 )

@@ -1,6 +1,7 @@
 package com.example.frontend.api
 
 import com.example.frontend.api.models.AvatarResponse
+import com.example.frontend.api.models.FollowsResponse
 import com.example.frontend.api.models.ImageSearchResponse
 import com.example.frontend.api.models.ImageUploadResponse
 import com.example.frontend.api.models.LoginRequest
@@ -9,7 +10,10 @@ import com.example.frontend.api.models.NewTweetRequest
 import com.example.frontend.api.models.NewTweetResponse
 import com.example.frontend.api.models.RegisterRequest
 import com.example.frontend.api.models.RegisterResponse
+import com.example.frontend.api.models.SubscribeRequest
+import com.example.frontend.api.models.SubscribeResponse
 import com.example.frontend.api.models.TweetResponse
+import com.example.frontend.api.models.UnsubscribeResponse
 import com.example.frontend.api.models.VerifyTokenRequest
 import com.example.frontend.api.models.VerifyTokenResponse
 import okhttp3.MultipartBody
@@ -56,5 +60,18 @@ interface ApiService {
     @GET("/api/v1/user/avatar/{name}")
     fun getUserAvatar(@Path("name") username: String): Call<AvatarResponse>
 
+    @GET("/api/v1/user/follows/of/{name}")
+    fun getFollows(@Path("name") username: String): Call<FollowsResponse>
+
+    @POST("/api/v1/user/subs")
+    fun subscribeUser(
+        @Header("token") token: String,  // 添加 token 到请求头
+        @Body  request: SubscribeRequest     // 添加 JSON body
+    ): Call<SubscribeResponse>
+    @POST("/api/v1/user/unsubs")
+    fun unsubscribeUser(
+        @Header("token") token: String,  // 添加 token 到请求头
+        @Body  request: SubscribeRequest     // 添加 JSON body
+    ): Call<UnsubscribeResponse>
 
 }

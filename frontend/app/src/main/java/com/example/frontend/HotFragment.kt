@@ -1,5 +1,6 @@
 package com.example.frontend
 
+import android.content.Context.MODE_PRIVATE
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,6 +10,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.frontend.api.models.FollowsResponse
 import com.example.frontend.api.models.TweetResponse
 import retrofit2.Call
 import retrofit2.Callback
@@ -17,6 +19,7 @@ import kotlin.math.log
 class HotFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var hotAdapter: HotAdapter
+    private  lateinit var followsList: List<String>
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -28,24 +31,38 @@ class HotFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         // 获取RecyclerView
         recyclerView = view.findViewById<RecyclerView>(R.id.recyclerViewHotItems)
+        
 
         // 设置网格布局管理器，2列
         recyclerView.layoutManager = GridLayoutManager(context, 2)
-        //获取请求
+        //请求关注列表
+        getFollowsList()
+
+        //请求item
         fetchHotTweets()
 
-        // 创建一些假数据
-//        val hotItems = listOf(
-//            HotItem("jj", "img", "is my img", listOf("img1", "img1")),
-//            HotItem("mike", "img", "is my img", listOf("img1")),
-//            HotItem("anna", "photo", "some content", listOf("img1", "img1")),
-//            HotItem("bob", "art", "another content", listOf("img1"))
-//        )
-
-        // 创建并设置适配器
-//        val hotAdapter = HotAdapter(hotItems)
-//        recyclerView.adapter = hotAdapter
     }
+    private  fun getFollowsList(){
+        val sharedPreferences = requireContext().getSharedPreferences("MyAppPrefs", MODE_PRIVATE)
+        val username = sharedPreferences.getString("name", null)
+
+        RetrofitInstance.api.getFollows(username.toString()).enqueue(object:Callback<FollowsResponse>{
+            override fun onResponse(call: Call<FollowsResponse>, response: Response<FollowsResponse>) {
+                if (response.isSuccessful) {
+                    followsList = response.body()?.content ?: emptyList()
+                    Log.d("success", "success")
+
+                } else {
+                    Log.e("Error", "Fal to get FollowsList: ${response.message()}")
+                }
+            }
+
+            override fun onFailure(call: Call<FollowsResponse>, t: Throwable) {
+                Log.e("Error", "Request failed", t)
+            }
+        })
+        }
+
     private fun fetchHotTweets() {
         RetrofitInstance.api.getHotTweets().enqueue(object : Callback<TweetResponse> {
 
@@ -58,6 +75,10 @@ class HotFragment : Fragment() {
                             // 成功获取到数据，更新 UI
 
                             val hotItemList = tweetResponse.content.map { tweetObject ->
+                                var isFollows=false
+                                if(tweetObject.tweet.sender in followsList) {
+                                    isFollows=true
+                                }
                                 HotItem(
                                     id = tweetObject.id,
                                     date = tweetObject.tweet.date,
@@ -65,7 +86,8 @@ class HotFragment : Fragment() {
                                     sender = tweetObject.tweet.sender,
                                     content = tweetObject.tweet.content,
                                     tags = tweetObject.tweet.tags,
-                                    images = tweetObject.tweet.images
+                                    images = tweetObject.tweet.images,
+                                    isFollowing=isFollows
                                 )
                             }
 
@@ -95,6 +117,7 @@ class HotFragment : Fragment() {
             }
         })
     }
+
 
 }
 
