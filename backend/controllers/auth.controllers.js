@@ -41,7 +41,7 @@ const signUp = (ctx) => {
         setErr(ctx, "user exists");
     else {
         passwords.set(username, password);
-        user_datas.set(username, { tweets: [], fans: [], follows: [] });
+        user_datas.set(username, { tweets: [], fans: [], follows: [], avatar: avatar ? avatar : null });
         signIn(ctx);
     }
 };

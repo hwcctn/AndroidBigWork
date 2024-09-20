@@ -64,7 +64,7 @@ const newTweet = (ctx) => {
             pushTweet(token, tweet);
             console.log(tweets)
 
-            // pushUpdate(tweet);
+            pushUpdate(tweet);
         } else {
             setErr(ctx, "Unauthorized", 400);
             return;
@@ -72,7 +72,7 @@ const newTweet = (ctx) => {
 
         setOk(ctx, id);
     } catch (e) {
-        console.log(`fuck you ${e}`);
+        console.log(e);
         setErr(ctx, "unknown error");
     }
 
@@ -85,8 +85,8 @@ const pushUpdate = (tweet) => {
     console.log(`fans: `, fans)
     fans.forEach(fan => {
         const conn = connections.get(fan);
-        // console.log(conn)
-        conn.send(tweet);
+        console.log(conn)
+        conn.send(JSON.stringify(tweet));
     });
 }
 

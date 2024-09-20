@@ -7,6 +7,11 @@ function setErr(ctx, msg, errorCode = 500) {
 }
 
 function setOk(ctx, content, code = 201) {
+    if (content == null) {
+        ctx.body = { result: 0, content: null };
+        ctx.status = code;
+        return;
+    }
     if (content) {
         ctx.body = { reuslt: 0, content };
     } else {
@@ -27,7 +32,7 @@ user_datas.set('fin', {
     follows: ['julia'],
     // id of tweets
     tweets: [0, 2],
-    avatar: null,
+    avatar: "fine",
 });
 
 user_datas.set('julia', {

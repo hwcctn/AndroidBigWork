@@ -48,6 +48,7 @@ const getAvatar = (ctx) => {
         return;
     }
     const data = user_datas.get(username);
+    console.log(data)
     if (data)
         setOk(ctx, data.avatar);
     else
@@ -111,8 +112,7 @@ const unsubscribe = (ctx) => {
 
 const listenUpdate = (ctx) => {
     try {
-        connections.set(auth(ctx.headers.token), ctx);
-        console.log(connections)
+        connections.set(auth(ctx.headers.token), ctx.websocket);
     } catch (err) {
         setErr(ctx, "Unauthorized", 401);
     }
