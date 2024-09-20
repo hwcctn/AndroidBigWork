@@ -2,6 +2,8 @@ package com.example.frontend
 
 import android.content.Context.MODE_PRIVATE
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +12,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.frontend.api.models.FollowsResponse
 import com.example.frontend.api.models.TweetResponse
 import retrofit2.Call
@@ -20,30 +23,42 @@ class HotFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var hotAdapter: HotAdapter
     private  lateinit var followsList: List<String>
+    private lateinit var swipeRefreshLayout: androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
+
         return inflater.inflate(R.layout.fragment_hot, container, false)
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         followsList = emptyList()
         // 获取RecyclerView
-        followsList = emptyList()
         recyclerView = view.findViewById<RecyclerView>(R.id.recyclerViewHotItems)
-        
+        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayoutHot)
 
         // 设置网格布局管理器，2列
         recyclerView.layoutManager = GridLayoutManager(context, 2)
+
+        // 设置下拉刷新监听器
+        swipeRefreshLayout.setOnRefreshListener {
+            refreshHotItems()
+        }
+        startView()
+
+
+    }
+    private  fun startView(){
         //请求关注列表
         getFollowsList()
 
         //请求item
         fetchHotTweets()
-
     }
+
     private  fun getFollowsList(){
         val sharedPreferences = requireContext().getSharedPreferences("MyAppPrefs", MODE_PRIVATE)
         val username = sharedPreferences.getString("name", null)
@@ -120,6 +135,13 @@ class HotFragment : Fragment() {
         })
     }
 
+private fun refreshHotItems() {
+
+    startView()
+    Log.d("successful swipeRefresh","successful swipeRefresh")
+    // 停止SwipeRefreshLayout的刷新动画
+    swipeRefreshLayout.isRefreshing = false
+}
 
 }
 

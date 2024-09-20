@@ -5,7 +5,12 @@
     android:layout_height="match_parent"
     android:background="@color/hot"
     tools:context=".HotFragment">
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshLayoutHot"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -16,4 +21,5 @@
             android:layout_height="match_parent"
             android:scrollbars="vertical" />
     </LinearLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </FrameLayout>
