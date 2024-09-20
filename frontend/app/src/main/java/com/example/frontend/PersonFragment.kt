@@ -38,12 +38,25 @@ public class PersonFragment : Fragment() {
         usernameTextView = view.findViewById(R.id.usernameTextView)
         userImage=view.findViewById<ImageView>(R.id.userImage)
         val spaceButton = view.findViewById<Button>(R.id.spaceButton)
-
+        val followButton=view.findViewById<Button>(R.id.followButton)
+        val fanButton=view.findViewById<Button>(R.id.fanButton)
 
         verifyToken()
         spaceButton.setOnClickListener {
 
             val intent = Intent(requireContext(), SpaceActivity::class.java)
+
+            startActivity(intent)
+        }
+        followButton.setOnClickListener {
+
+            val intent = Intent(requireContext(), FollowingListActivity::class.java)
+
+            startActivity(intent)
+        }
+        fanButton.setOnClickListener {
+
+            val intent = Intent(requireContext(), FanActivity::class.java)
 
             startActivity(intent)
         }

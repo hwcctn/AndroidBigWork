@@ -70,12 +70,13 @@
                 />
 
             <android.widget.Button
-
+                android:id="@+id/followButton"
                 android:text="关注"
                 style="@style/CustomButtonStyle"
                 />
 
             <android.widget.Button
+                android:id="@+id/fanButton"
                 android:text="粉丝"
                 style="@style/CustomButtonStyle"
                 />

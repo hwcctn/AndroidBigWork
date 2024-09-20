@@ -1,6 +1,7 @@
 package com.example.frontend.api
 
 import com.example.frontend.api.models.AvatarResponse
+import com.example.frontend.api.models.FansResponse
 import com.example.frontend.api.models.FollowsResponse
 import com.example.frontend.api.models.ImageSearchResponse
 import com.example.frontend.api.models.ImageUploadResponse
@@ -63,6 +64,8 @@ interface ApiService {
     @GET("/api/v1/user/follows/of/{name}")
     fun getFollows(@Path("name") username: String): Call<FollowsResponse>
 
+    @GET("/api/v1/user/fans/of/{name}")
+    fun getFans(@Path("name") username: String): Call<FansResponse>
 
 
     @POST("/api/v1/user/subs")

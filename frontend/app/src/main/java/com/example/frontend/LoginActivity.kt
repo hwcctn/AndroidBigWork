@@ -55,7 +55,7 @@ class LoginActivity : AppCompatActivity() {
                                     editor.apply()
 
                                     val token = sharedPreferences.getString("token", null)
-                                    val username = sharedPreferences.getString("username", null)
+                                    val username = sharedPreferences.getString("name", null)
                                     Log.d("Token_and_Name", "Stored token: $token,name:$username")
                                     startActivity(Intent(this@LoginActivity, MainActivity::class.java))
                                 } else {

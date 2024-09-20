@@ -30,6 +30,7 @@ class HotFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         // 获取RecyclerView
+        followsList = emptyList()
         recyclerView = view.findViewById<RecyclerView>(R.id.recyclerViewHotItems)
         
 
