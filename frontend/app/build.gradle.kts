@@ -1,3 +1,5 @@
+import com.android.tools.r8.R8
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
@@ -5,12 +7,13 @@ plugins {
 
 android {
     namespace = "com.example.frontend"
-    compileSdk = 34
+    compileSdk = 35
+
 
     defaultConfig {
         applicationId = "com.example.frontend"
-        minSdk = 29
-        targetSdk = 34
+        minSdk = 35
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -52,6 +55,7 @@ dependencies {
     implementation("androidx.activity:activity-ktx:1.8.0")
     implementation ("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
 
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.6")
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

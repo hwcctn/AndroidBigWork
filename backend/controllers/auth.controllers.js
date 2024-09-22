@@ -3,6 +3,7 @@ const { setErr, setOk, Errors, user_datas, id } = require("./utils");
 const passwords = new Map()
 passwords.set("fin", "123456")
 passwords.set("julia", "123456")
+passwords.set("well", "123456")
 
 const sessions = new Map()
 sessions.set("fin", "fin")

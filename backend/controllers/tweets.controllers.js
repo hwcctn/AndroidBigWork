@@ -85,8 +85,14 @@ const pushUpdate = (tweet) => {
     console.log(`fans: `, fans)
     fans.forEach(fan => {
         const conn = connections.get(fan);
-        console.log(conn)
-        conn.send(JSON.stringify(tweet));
+        if (!conn) return;
+        try {
+            conn.send(JSON.stringify(tweet));
+            console.log(`pushed to ${fan}`);
+        } catch (e) {
+            console.log(e);
+            connections.delete(fan);
+        }
     });
 }
 

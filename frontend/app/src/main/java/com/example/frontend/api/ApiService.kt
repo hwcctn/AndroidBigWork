@@ -78,5 +78,4 @@ interface ApiService {
         @Header("token") token: String,  // 添加 token 到请求头
         @Body  request: SubscribeRequest     // 添加 JSON body
     ): Call<UnsubscribeResponse>
-
 }

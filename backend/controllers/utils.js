@@ -42,6 +42,13 @@ user_datas.set('julia', {
     tweets: [1],
     avatar: null,
 });
+user_datas.set('well', {
+    fans: ['fin'],
+    follows: [],
+    // id of tweets
+    tweets: [1],
+    avatar: null,
+});
 
 var tweets = [];
 var id = 0;
