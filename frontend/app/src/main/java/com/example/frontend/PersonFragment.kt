@@ -3,9 +3,11 @@ package com.example.frontend
 import android.app.Activity
 import android.content.Context.MODE_PRIVATE
 import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.media.Image
 import android.os.Bundle
+import android.util.Base64
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -81,8 +83,8 @@ public class PersonFragment : Fragment() {
                         if (response.isSuccessful) {
                             val username = response.body()?.content?.username
                             Log.d("name", username.toString())
-                            getUserImageName(username.toString())
-
+//                            getUserImageName(username.toString())
+                            loadAvatarFromPreferences(username.toString())
 
                         } else {
                             Log.e("Error", "Failed to verify token: ${response.message()}")
@@ -95,48 +97,64 @@ public class PersonFragment : Fragment() {
                 })
         }
     }
-    private fun getUserImageName(userName: String){
+//    private fun getUserImageName(userName: String){
+//
+//        RetrofitInstance.api.getUserAvatar(userName).enqueue(object : Callback<AvatarResponse> {
+//
+//
+//            override fun onResponse(call: Call<AvatarResponse>, response: Response<AvatarResponse>) {
+//                if (response.isSuccessful) {
+//
+//                    val imageName = response.body()?.content.toString()
+//                    getUserImage(imageName,userName)
+//                } else {
+//                    Log.e("Error", "Fal to get avatar: ${response.message()}")
+//                }
+//            }
+//
+//            override fun onFailure(call: Call<AvatarResponse>, t: Throwable) {
+//                Log.e("Error", "Request failed", t)
+//            }
+//        })
+//    }
+//    private fun getUserImage(imageName: String,username:String){
+//        Log.d("imgName",imageName)
+//        ImageRetrofitInstance.api.getImage(imageName)
+//            .enqueue(object : Callback<ResponseBody> {
+//                override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+//                    if (response.isSuccessful) {
+//                        val inputStream: InputStream? = response.body()?.byteStream()
+//                        val bitmap = BitmapFactory.decodeStream(inputStream)
+//
+//                        userImage.setImageBitmap(bitmap)
+//                        usernameTextView.text = username
+//
+//                    } else {
+//                        Log.e("Error", "Failed to get avatar: ${response.message()}")
+//                    }
+//                }
+//
+//                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+//                    Log.e("Error", "Request failed", t)
+//
+//                }
+//            })
+//    }
+    private fun loadAvatarFromPreferences(username: String) {
+    val sharedPreferences = requireContext().getSharedPreferences("MyAppPrefs", Activity.MODE_PRIVATE)
+        val imageBase64 = sharedPreferences.getString("avatar", null)
+        if (imageBase64 != null) {
+            val bitmap = base64ToBitmap(imageBase64)
+            // 使用 bitmap，例如显示在 ImageView 中
+            userImage.setImageBitmap(bitmap)
+            usernameTextView.setText(username)
 
-        RetrofitInstance.api.getUserAvatar(userName).enqueue(object : Callback<AvatarResponse> {
-
-
-            override fun onResponse(call: Call<AvatarResponse>, response: Response<AvatarResponse>) {
-                if (response.isSuccessful) {
-
-                    val imageName = response.body()?.content.toString()
-                    getUserImage(imageName,userName)
-                } else {
-                    Log.e("Error", "Fal to get avatar: ${response.message()}")
-                }
-            }
-
-            override fun onFailure(call: Call<AvatarResponse>, t: Throwable) {
-                Log.e("Error", "Request failed", t)
-            }
-        })
+        }
     }
-    private fun getUserImage(imageName: String,username:String){
-        Log.d("imgName",imageName)
-        ImageRetrofitInstance.api.getImage(imageName)
-            .enqueue(object : Callback<ResponseBody> {
-                override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                    if (response.isSuccessful) {
-                        val inputStream: InputStream? = response.body()?.byteStream()
-                        val bitmap = BitmapFactory.decodeStream(inputStream)
 
-                        userImage.setImageBitmap(bitmap)
-                        usernameTextView.text = username
-
-                    } else {
-                        Log.e("Error", "Failed to get avatar: ${response.message()}")
-                    }
-                }
-
-                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                    Log.e("Error", "Request failed", t)
-
-                }
-            })
+    private fun base64ToBitmap(base64: String): Bitmap {
+        val decodedString = Base64.decode(base64, Base64.DEFAULT)
+        return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
     }
 
 }

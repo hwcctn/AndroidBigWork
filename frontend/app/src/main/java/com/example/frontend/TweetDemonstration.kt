@@ -29,7 +29,7 @@ class TweetDemonstration : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         // 设置适配器
-        val adapter = CardAdapter(emptyList())
+        val adapter = CardAdapter(emptyList(),requireContext())
         recyclerView.adapter = adapter
 
         Log.e("FUCK", "hello?")
@@ -37,11 +37,11 @@ class TweetDemonstration : Fragment() {
         tweetViewModel.tweets.observe(viewLifecycleOwner, Observer { tweets ->
             // 条目在这改
             adapter.updateData(tweets.map { tweet ->
-                CardItem(tweet.title, tweet.content.joinToString("\n"))
+                CardItem(tweet.sender,tweet.title, tweet.content,tweet.images)
             })
         })
 
-        tweetViewModel.connectWebSocket()
+        tweetViewModel.connectWebSocket(requireContext())
 
         // 从布局中找到名为 add_button 的按钮，并将其赋值给 addButton 变量
         val addButton = view.findViewById<Button>(R.id.add_button)
@@ -58,6 +58,6 @@ class TweetDemonstration : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         // 确保 ViewModel 在视图创建后进行 WebSocket 连接
-        tweetViewModel.connectWebSocket()
+        tweetViewModel.connectWebSocket(requireContext())
     }
 }

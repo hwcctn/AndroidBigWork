@@ -1,5 +1,6 @@
 package com.example.frontend
 
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -16,7 +17,7 @@ data class Tweet(
     val images: List<String>
 )
 
-class TweetViewModel : ViewModel() {
+class TweetViewModel() : ViewModel() {
 
     private val _tweets = MutableLiveData<List<Tweet>>()
     val tweets: LiveData<List<Tweet>> get() = _tweets
@@ -28,11 +29,21 @@ class TweetViewModel : ViewModel() {
 
     private lateinit var webSocket: WebSocket
 
-    fun connectWebSocket() {
+    fun connectWebSocket(context: Context) {
+        // 从 SharedPreferences 获取 token
+        val sharedPreferences = context.getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
+        val token = sharedPreferences.getString("token", null)
+        Log.d("soketr_token","${token}")
+
+        if (token == null) {
+            Log.e("WebSocket Status", "Token is null, cannot connect.")
+            return
+        }
+
         val request = Request.Builder()
             .url("wss://10.70.143.168:8001/api/v1/user/listen")
             // 记得改token, 这里默认用了fin
-            .addHeader("token", "fin")
+            .addHeader("token", token.toString())
             .build()
 
         webSocket = client.newWebSocket(request, object : WebSocketListener() {

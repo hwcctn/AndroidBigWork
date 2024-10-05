@@ -1,5 +1,7 @@
 package com.example.frontend
 
+import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -11,7 +13,22 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        // 检查 token 是否存在
+//        val sharedPreferences: SharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE)
+//        val token = sharedPreferences.getString("token", null)
+//
+//        if (token.isNullOrEmpty()) {
+//            // 如果 token 不存在，跳转到登录页面
+//            val intent = Intent(this, LoginActivity::class.java)
+//            startActivity(intent)
+//            finish() // 结束当前活动，防止用户返回
+//            return
+//        }
+//        val intent = Intent(this, LoginActivity::class.java)
+//        startActivity(intent)
+//        finish() // 结束当前活动，防止用户返回
         setContentView(R.layout.activity_main)
+
         //绑定控件和布局
         val hotLayout: LinearLayout = findViewById(R.id.hotLayout)
         val dynamicLayout: LinearLayout = findViewById(R.id.dynamicLayout)

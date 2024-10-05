@@ -96,6 +96,7 @@ class HotFragment : Fragment() {
                                 if(tweetObject.tweet.sender in followsList) {
                                     isFollows=true
                                 }
+                                Log.d("ID","${tweetObject.id}")
                                 HotItem(
                                     id = tweetObject.id,
                                     date = tweetObject.tweet.date,
@@ -111,10 +112,8 @@ class HotFragment : Fragment() {
 
                             val adapter = HotAdapter(hotItemList)
                             recyclerView.adapter = adapter
-
                             Log.d("HotTweets", "Successfully fetched hot tweets: $tweetResponse.content")
 
-                            // TODO: 在这里将数据传递给 RecyclerView Adapter 以更新 UI
                         } else {
                             Toast.makeText(requireContext(), "获取热门数据失败: ${tweetResponse.reuslt}", Toast.LENGTH_SHORT).show()
                             Log.d("fall", "fall: ${tweetResponse.reuslt}")

@@ -13,10 +13,12 @@ import com.example.frontend.api.models.RegisterRequest
 import com.example.frontend.api.models.RegisterResponse
 import com.example.frontend.api.models.SubscribeRequest
 import com.example.frontend.api.models.SubscribeResponse
+import com.example.frontend.api.models.TweetByIdResponse
 import com.example.frontend.api.models.TweetResponse
 import com.example.frontend.api.models.UnsubscribeResponse
 import com.example.frontend.api.models.VerifyTokenRequest
 import com.example.frontend.api.models.VerifyTokenResponse
+import com.example.frontend.api.models.SomeoneTweetResponse
 import okhttp3.MultipartBody
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -46,7 +48,7 @@ interface ApiService {
     fun searchImage(@Part file: MultipartBody.Part): Call<List<List<ImageSearchResponse>>>
 
     @GET("/api/v1/image/request/{imgUrl}")
-    fun getImage(@Path("imgUrl") userId: String): Call<ResponseBody>
+    fun getImage(@Path("imgUrl") image: String): Call<ResponseBody>
 
     @POST("/api/v1/user/verify")
     fun verifyToken(@Body request: VerifyTokenRequest): Call<VerifyTokenResponse>
@@ -67,6 +69,10 @@ interface ApiService {
     @GET("/api/v1/user/fans/of/{name}")
     fun getFans(@Path("name") username: String): Call<FansResponse>
 
+    @GET("/api/v1/tweet/of/{name}")
+    fun getSomeoneTweet(@Path("name") username: String): Call<SomeoneTweetResponse>
+    @GET("/api/v1/tweet/id/{id}")
+    fun getTweetById(@Path("id") id: String): Call<TweetByIdResponse>
 
     @POST("/api/v1/user/subs")
     fun subscribeUser(

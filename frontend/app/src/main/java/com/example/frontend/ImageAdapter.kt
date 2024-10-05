@@ -33,9 +33,9 @@ class ImageAdapter : ListAdapter<Uri, ImageAdapter.ImageViewHolder>(DiffCallback
 
         private val imageView: ImageView = itemView.findViewById(R.id.imageView)
 
-        // 将图片的 Uri 绑定到 ImageView 上，显示图片
+
         fun bind(uri: Uri) {
-            imageView.setImageURI(uri)  // 使用 setImageURI 方法根据 Uri 显示图片
+            imageView.setImageURI(uri)
         }
     }
 

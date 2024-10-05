@@ -11,5 +11,12 @@
     <color name="like_20">#33C9379D</color>
     <color name="notification_20">#33AE7E0F</color>
     <color name="profile_20">#335B37B7</color>
+    <color name="primary_color">#FF6F61</color>
+    <color name="secondary_color">#FFB2C1</color>
+    <color name="error_color">#D9453D</color>
+    <color name="background_color">#F5F5F5</color>
+    <color name="title_color">#757575</color>
+    <color name="highlight_color">#FFD700</color>
+
 
 </resources>

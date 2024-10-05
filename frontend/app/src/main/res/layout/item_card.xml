@@ -13,15 +13,31 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- 用户头像 -->
-        <ImageView
-            android:id="@+id/image_profile"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@drawable/baseline_person"
-            android:layout_marginBottom="8dp"
-            android:background="@drawable/circle_images"
-            />
+        <!-- 用户头像和用户名 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="8dp">
+
+            <ImageView
+                android:id="@+id/image_profile"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/baseline_person"
+                android:background="@drawable/circle_images"
+                />
+
+            <TextView
+                android:id="@+id/text_username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="用户名"
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                android:gravity="center_vertical" />
+        </LinearLayout>
 
         <!-- 标题 -->
         <TextView
@@ -42,5 +58,10 @@
             android:textSize="14sp"
             android:textColor="@color/gray" />
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view_images"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"/>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

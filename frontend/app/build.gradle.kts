@@ -3,17 +3,21 @@ import com.android.tools.r8.R8
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+//    kotlin("kapt")
 }
 
 android {
     namespace = "com.example.frontend"
-    compileSdk = 35
+//    compileSdk = 35
+    compileSdk = 34
 
 
     defaultConfig {
         applicationId = "com.example.frontend"
-        minSdk = 35
-        targetSdk = 35
+//        minSdk = 35
+        minSdk = 29
+//        targetSdk = 35
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
@@ -54,8 +58,11 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("androidx.activity:activity-ktx:1.8.0")
     implementation ("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
-
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.6")
+
+//    implementation("com.github.bumptech.glide:glide:4.15.0")
+//    kapt("com.github.bumptech.glide:compiler:4.15.0")
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
