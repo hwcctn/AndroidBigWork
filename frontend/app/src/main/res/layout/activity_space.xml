@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="16dp">
 
@@ -24,44 +25,21 @@
             android:contentDescription="返回按钮"
         />
 
-        <ImageView
-            android:id="@+id/profileImageView"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:src="@drawable/baseline_person"
-            android:background="@drawable/circle_images"
-            android:scaleType="centerCrop"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            />
+
+
 
 
         <TextView
-            android:id="@+id/nameTextView"
+            android:id="@+id/sapceinfoTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="张三"
+            android:text="个人空间"
             android:textSize="24sp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginTop="8dp" />
+            android:layout_marginLeft="89dp"
+            />
 
     </LinearLayout>
-    <!-- 卡片式信息 -->
-<!--    <TextView-->
-<!--        android:id="@+id/cardTitleTextView"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="个人简介"-->
-<!--        android:textSize="18sp"-->
-<!--        android:layout_marginTop="16dp" />-->
 
-<!--    <TextView-->
-<!--        android:id="@+id/cardContentTextView"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="这里是个人简介的内容..."-->
-<!--        android:layout_marginTop="8dp" />-->
-    <!-- RecyclerView 用于展示卡片列表 -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"

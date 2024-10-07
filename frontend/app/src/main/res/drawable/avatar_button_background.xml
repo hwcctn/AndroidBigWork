@@ -1,12 +1,15 @@
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
+<!-- res/drawable/button_background.xml -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <!-- 按钮背景层 -->
     <item android:left="4dp" android:right="4dp" android:top="4dp" android:bottom="4dp">
         <shape android:shape="rectangle">
             <gradient
-                android:startColor="#FAE1ED"
-                android:endColor="#EFABC8"
+                android:startColor="#F2D8E5"
+                android:endColor="#F075B8"
                 android:angle="270"/>
             <corners android:radius="20dp"/>
         </shape>
     </item>
-</selector>
+
+</layer-list>

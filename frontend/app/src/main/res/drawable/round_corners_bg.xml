@@ -4,9 +4,6 @@
     <!--圆角-->
     <corners android:radius="10dp"/>
 
-    <!--边线-->
-    <stroke android:width="0.5dp" android:color="@color/black"/>
-
     <!--填充色-->
-    <solid android:color="#FFF6F9"/>
+    <solid android:color="#FFFFFF"/>
 </shape>

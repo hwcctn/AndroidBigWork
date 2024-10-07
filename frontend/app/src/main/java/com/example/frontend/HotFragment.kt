@@ -1,5 +1,6 @@
 package com.example.frontend
 
+import android.animation.ObjectAnimator
 import android.content.Context.MODE_PRIVATE
 import android.os.Bundle
 import android.os.Handler
@@ -18,6 +19,8 @@ import com.example.frontend.api.models.TweetResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import android.widget.LinearLayout
+
 import kotlin.math.log
 class HotFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
@@ -42,6 +45,7 @@ class HotFragment : Fragment() {
 
         // 设置网格布局管理器，2列
         recyclerView.layoutManager = GridLayoutManager(context, 2)
+        // 初始化时加载数据
 
         // 设置下拉刷新监听器
         swipeRefreshLayout.setOnRefreshListener {

@@ -6,13 +6,13 @@
     <color name="person">#C9379D</color>
     <color name="dynamic">#AE7E0F</color>
     <color name="profile">#5B37B7</color>
-    <color name="gray">#C3BEBE</color>
+    <color name="gray">#F2EFEF</color>
     <color name="home_20">#331194AA</color>
     <color name="like_20">#33C9379D</color>
     <color name="notification_20">#33AE7E0F</color>
     <color name="profile_20">#335B37B7</color>
     <color name="primary_color">#FF6F61</color>
-    <color name="secondary_color">#FFB2C1</color>
+    <color name="secondary_color">#F0E1E4</color>
     <color name="error_color">#D9453D</color>
     <color name="background_color">#F5F5F5</color>
     <color name="title_color">#757575</color>

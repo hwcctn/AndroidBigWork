@@ -6,13 +6,52 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".FollowingListActivity">
+    <LinearLayout
+        android:id="@+id/followHeaderLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginBottom="16dp">
 
+        <ImageButton
+            android:id="@+id/backButton"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:background="@drawable/button_r_p"
+            android:src="@drawable/arrow_left"
+            android:scaleType="centerInside"
+            android:contentDescription="返回按钮"
+            />
+
+        <TextView
+            android:id="@+id/fanlist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="关注列表"
+            android:textSize="24sp"
+            android:layout_marginLeft="93dp"
+            />
+
+    </LinearLayout>
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="?android:attr/progressBarStyleLarge"
+        android:indeterminateTint="@color/gray"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView_following"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_margin="16dp"
-        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/followHeaderLayout"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

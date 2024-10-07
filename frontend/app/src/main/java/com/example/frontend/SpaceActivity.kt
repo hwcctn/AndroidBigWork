@@ -18,18 +18,17 @@ import com.example.frontend.api.models.TweetByIdResponse
 import retrofit2.Callback
 import retrofit2.Response
 class SpaceActivity : AppCompatActivity() {
+
     private lateinit var cardAdapter: CardAdapter
     private var cardList: MutableList<CardItem> = mutableListOf()
-    private lateinit var  profileImage:ImageView
-    private lateinit var userName:TextView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_space)
 
         // 设置返回按钮的点击事件
         val backButton = findViewById<ImageButton>(R.id.backButton)
-         userName=findViewById<TextView>(R.id.nameTextView)
-         profileImage=findViewById<ImageView>(R.id.profileImageView)
+
 
         backButton.setOnClickListener {
             // 关闭当前Activity，返回到PersonFragment
@@ -47,7 +46,7 @@ class SpaceActivity : AppCompatActivity() {
         val username = sharedPreferences.getString("name", null)
         setUserNameProfile(username.toString());
         requestTweetsOfUser(username.toString())
-        loadAvatarFromPreferences(username.toString())
+
 
     }
     private fun setUserNameProfile(username: String){
@@ -107,22 +106,6 @@ class SpaceActivity : AppCompatActivity() {
                 Log.e("Error2", "Request failed", t)
             }
         })
-    }
-    private fun loadAvatarFromPreferences(username: String) {
-        val sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE)
-        val imageBase64 = sharedPreferences.getString("avatar", null)
-        if (imageBase64 != null) {
-            val bitmap = base64ToBitmap(imageBase64)
-            // 使用 bitmap，例如显示在 ImageView 中
-            profileImage.setImageBitmap(bitmap)
-            userName.setText(username)
-
-        }
-    }
-
-    private fun base64ToBitmap(base64: String): Bitmap {
-        val decodedString = Base64.decode(base64, Base64.DEFAULT)
-        return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
     }
 
 

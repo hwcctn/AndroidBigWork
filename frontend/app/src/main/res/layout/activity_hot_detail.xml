@@ -7,6 +7,7 @@
     android:padding="16dp"
     android:background="@color/white">
 
+    <!-- Header Section -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -29,10 +30,12 @@
             android:text="作品详细"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:gravity="center"/>
+            android:layout_marginLeft="89dp"
+            android:gravity="center_vertical"/>
 
     </LinearLayout>
 
+    <!-- Profile Section -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -42,16 +45,16 @@
             android:id="@+id/detailProfileImageView"
             android:layout_width="70dp"
             android:layout_height="70dp"
-            android:src="@drawable/baseline_person"
+            android:src="@drawable/g"
             android:scaleType="centerCrop"
-            app:shapeAppearanceOverlay="@style/CircularImageView"/>
+            app:shapeAppearanceOverlay="@style/CircularImageView"
+            android:layout_marginEnd="16dp"/>
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:orientation="vertical"
-            android:layout_marginStart="16dp">
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/detailNameTextView"
@@ -63,15 +66,16 @@
                 android:layout_gravity="center_vertical"/>
 
             <TextView
-                android:id="@+id/currentTimeTextView"
+                android:id="@+id/TimeTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="当前时间"
+                android:text="发布时间"
                 android:textSize="14sp"
                 android:textColor="@android:color/darker_gray"/>
         </LinearLayout>
     </LinearLayout>
 
+    <!-- Title Section -->
     <TextView
         android:id="@+id/detailTitleTextView"
         android:layout_width="wrap_content"
@@ -81,6 +85,7 @@
         android:layout_marginTop="8dp"
         android:textColor="@color/title_color"/>
 
+    <!-- Content Section -->
     <TextView
         android:id="@+id/detailContentTextView"
         android:layout_width="wrap_content"
@@ -90,21 +95,12 @@
         android:layout_marginTop="4dp"
         android:textColor="@android:color/darker_gray"/>
 
-
-
-    <TextView
-        android:id="@+id/extraInfoTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Additional Information:"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:layout_marginTop="16dp"/>
-
+    <!-- Images Section -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/imagesRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:orientation="horizontal"/>
+        android:orientation="horizontal"
+        android:nestedScrollingEnabled="false"/>
 </LinearLayout>

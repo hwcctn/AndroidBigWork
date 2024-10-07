@@ -9,6 +9,6 @@ val sender: String,
 val content: List<String>,
 val tags: List<String>,
 val images: List<String>,
-var isFollowing:Boolean
+var isFollowing:Boolean,
 
 )

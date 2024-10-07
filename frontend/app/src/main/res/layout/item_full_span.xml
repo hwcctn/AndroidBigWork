@@ -3,16 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    android:elevation="4dp"
+    android:layout_margin="3dp"
     app:cardCornerRadius="8dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:layout_margin="5dp"
-        android:background="@drawable/hot_item_box_border">
+
+       >
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/topPartLayout"
         android:layout_width="match_parent"
@@ -22,101 +20,145 @@
         app:layout_constraintEnd_toEndOf="parent"
        >
 
-        <!-- 第一行：头像和名字 -->
+
         <ImageView
-            android:id="@+id/profileImageView"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:src="@drawable/g"
-            android:layout_marginEnd="8dp"
-            android:scaleType="centerCrop"
-            app:layout_constraintTop_toTopOf="parent"
+            android:id="@+id/imagesImageView"
+            android:layout_width="352dp"
+            android:layout_height="249dp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:shapeAppearanceOverlay="@style/CircularImageView"/>
-
-        <TextView
-            android:id="@+id/nameTextView"
+            app:layout_constraintTop_toTopOf="parent" />
+        <ProgressBar
+            android:id="@+id/progressBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Username"
-            android:textSize="18sp"
-            android:textColor="#000000"
-            android:layout_marginStart="5dp"
-            app:layout_constraintTop_toTopOf="@id/profileImageView"
-            app:layout_constraintStart_toEndOf="@id/profileImageView"
-            app:layout_constraintBottom_toBottomOf="@id/profileImageView"/>
+            android:layout_centerInParent="true"
+            android:visibility="gone"
+            android:indeterminateTint="@color/gray"
+            app:layout_constraintEnd_toEndOf="@id/imagesImageView"
+            app:layout_constraintStart_toStartOf="@id/imagesImageView"
+            app:layout_constraintTop_toTopOf="@id/imagesImageView"
+            app:layout_constraintBottom_toBottomOf="@id/imagesImageView"
+            />
 
-        <!-- 第二行：标题 -->
-        <TextView
-            android:id="@+id/titleTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Title goes here"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:textColor="#000000"
-            app:layout_constraintTop_toBottomOf="@id/profileImageView"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginTop="16dp"/>
 
-        <!-- 第三行：主题内容 -->
-        <TextView
-            android:id="@+id/contentTextView"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="This is the main content of the post. It can be multiple lines of text."
-            android:textSize="16sp"
-            android:textColor="#000000"
-            app:layout_constraintTop_toBottomOf="@id/titleTextView"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginTop="8dp"/>
-
-        <!-- 第四行：展示图片，可能有多张 -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/imagesRecyclerView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="16dp"
             android:orientation="horizontal"
-            app:layout_constraintTop_toBottomOf="@id/contentTextView"
+
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintTop_toBottomOf="@id/imagesImageView">
+
+
+            <TextView
+                android:id="@+id/titleTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:text="title"
+                android:textColor="#000000"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/contentTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="This is the main content of the post. It can be multiple lines of text."
+                android:textColor="#000000"
+                android:textSize="11sp" />
+        </LinearLayout>
+
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <!-- 第五行：交互功能，喜欢和关注按钮 -->
+
         <LinearLayout
             android:id="@+id/interactionsLayout"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="16dp"
+            android:padding="12dp"
+            android:layout_margin="5dp"
             app:layout_constraintTop_toBottomOf="@id/topPartLayout"
-            app:layout_constraintStart_toStartOf="parent">
+            android:gravity="center_vertical"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="16dp">
 
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/profileImageView"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/baseline_person"
+                android:scaleType="centerCrop"
+                app:shapeAppearanceOverlay="@style/CircularImageView"/>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:layout_marginStart="5dp">
+
+                <TextView
+                    android:id="@+id/nameTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="Username"
+                    android:textSize="10sp"
+                    android:textColor="#000000"/>
+
+                <TextView
+                    android:id="@+id/TimeTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="发布时间"
+                    android:textSize="8dp"
+                    android:textColor="@android:color/darker_gray"
+                    android:layout_marginTop="2dp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginStart="0dp"
+                android:gravity="center_vertical"
+                >
+                <!-- 关注按钮 -->
+                <ImageButton
+                    android:id="@+id/followButton"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/follow2"
+                    android:background="@color/white"
+                    android:scaleType="fitCenter"
+                    android:adjustViewBounds="true"
+                    android:layout_marginStart="20dp"
+                    />
             <!-- 喜爱按钮 -->
             <ImageButton
                 android:id="@+id/likeButton"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:src="@drawable/like"
                 android:background="@color/white"
                 android:scaleType="fitCenter"
                 android:adjustViewBounds="true"
+                android:layout_marginStart="8dp"
                 />
 
-            <!-- 关注按钮 -->
-            <ImageButton
-                android:id="@+id/followButton"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginStart="20dp"
-                android:src="@drawable/follow2"
-                android:background="@color/white"
-                android:scaleType="fitCenter"
-                android:adjustViewBounds="true"
-                />
+
 
         </LinearLayout>
-
+        </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

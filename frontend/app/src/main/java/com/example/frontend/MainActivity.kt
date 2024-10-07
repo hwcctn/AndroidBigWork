@@ -13,17 +13,17 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        // 检查 token 是否存在
-//        val sharedPreferences: SharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE)
-//        val token = sharedPreferences.getString("token", null)
-//
-//        if (token.isNullOrEmpty()) {
-//            // 如果 token 不存在，跳转到登录页面
-//            val intent = Intent(this, LoginActivity::class.java)
-//            startActivity(intent)
-//            finish() // 结束当前活动，防止用户返回
-//            return
-//        }
+//         检查 token 是否存在
+        val sharedPreferences: SharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE)
+        val token = sharedPreferences.getString("token", null)
+
+        if (token.isNullOrEmpty()) {
+            // 如果 token 不存在，跳转到登录页面
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+            finish() // 结束当前活动，防止用户返回
+            return
+        }
 //        val intent = Intent(this, LoginActivity::class.java)
 //        startActivity(intent)
 //        finish() // 结束当前活动，防止用户返回

@@ -18,11 +18,18 @@ import okhttp3.ResponseBody
 import androidx.recyclerview.widget.RecyclerView
 
 import java.io.InputStream
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
+
 class HotDetailActivity : AppCompatActivity() {
     private lateinit var  profileImageView:ImageView
     private lateinit var nameTextView:TextView
     private lateinit var titleTextView:TextView
     private lateinit var contentTextView:TextView
+    private lateinit var timeTextView:TextView
+
 
     private lateinit var imagesRecyclerView: RecyclerView
     private lateinit var imageAdapter: ImageAdapter3
@@ -35,7 +42,9 @@ class HotDetailActivity : AppCompatActivity() {
         nameTextView = findViewById<TextView>(R.id.detailNameTextView)
         titleTextView = findViewById<TextView>(R.id.detailTitleTextView)
         contentTextView = findViewById<TextView>(R.id.detailContentTextView)
+        timeTextView=findViewById<TextView>(R.id.TimeTextView)
         imagesRecyclerView = findViewById(R.id.imagesRecyclerView)
+
         // 设置布局管理器
         imagesRecyclerView.layoutManager = LinearLayoutManager(this)
         // 获取传递过来的数据
@@ -56,10 +65,12 @@ class HotDetailActivity : AppCompatActivity() {
                         val title = Response.content.title
                         val content = Response.content.content
                         val images=Response.content.images
+                        val time=Response.content.date
                         getUserImageName(sender.toString())
                         nameTextView.text = sender
                         titleTextView.text = title
                         contentTextView.text = content.joinToString(",")
+                        timeTextView.text= formatTimestamp(time)
                         Log.d("images","${images}")
 
                         imageAdapter = ImageAdapter3(images)
@@ -78,28 +89,7 @@ class HotDetailActivity : AppCompatActivity() {
             }
         })
     }
-//    private fun loadImages(imageUrls: List<String>) {
-//        for (imageUrl in imageUrls) {
-//            ImageRetrofitInstance.api.getImage(imageUrl).enqueue(object : Callback<ResponseBody> {
-//                override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-//                    if (response.isSuccessful) {
-//                        val inputStream: InputStream? = response.body()?.byteStream()
-//                        val bitmap = BitmapFactory.decodeStream(inputStream)
-//
-//                        // 这里可以将 bitmap 显示到适当的 ImageView 中
-//                        // 假设你有一个 ImageView 列表，称为 imageViews
-//                        // imageViews[index].setImageBitmap(bitmap)
-//                    } else {
-//                        Log.e("Error", "Failed to load image: ${response.message()}")
-//                    }
-//                }
-//
-//                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-//                    Log.e("Error", "Request failed", t)
-//                }
-//            })
-//        }
-//    }
+
     private fun getUserImageName(userName: String){
 
         RetrofitInstance.api.getUserAvatar(userName).enqueue(object : Callback<AvatarResponse> {
@@ -142,6 +132,11 @@ class HotDetailActivity : AppCompatActivity() {
 
                 }
             })
+    }
+    fun formatTimestamp(timestamp: Long): String {
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+        val dateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(timestamp), ZoneId.systemDefault())
+        return dateTime.format(formatter)
     }
 
 }

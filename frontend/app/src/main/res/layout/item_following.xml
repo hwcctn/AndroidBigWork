@@ -9,7 +9,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="16dp">
+        android:padding="16dp"
+        android:gravity="center_vertical">
 
         <ImageView
             android:id="@+id/imageView_profile"
@@ -26,6 +27,18 @@
             android:text="Username"
             android:textSize="18sp"
             android:textStyle="bold" />
+
+
+
+        <Button
+            android:id="@+id/button_unfollow"
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
+            android:layout_marginStart="100dp"
+            android:text="取消关注"
+            android:background="@drawable/cancel_button_background"
+            />
+
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>

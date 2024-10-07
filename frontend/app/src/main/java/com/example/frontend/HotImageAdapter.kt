@@ -63,9 +63,8 @@ class HotImageAdapter(private val imageList: List<String>) :
             }
         })
     }
-//    override fun onBindViewHolder(holder:  HotImageViewHolder, position: Int) {
-//        holder.imageView.setImageResource(imageList[position])
-//    }
+
 
     override fun getItemCount(): Int = imageList.size
+
 }
