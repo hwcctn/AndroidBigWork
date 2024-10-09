@@ -6,6 +6,7 @@ const pushTweet = (token, tweet) => {
     const user = auth(token);
     console.log(`id: ${id}`);
     tweets.push(tweet);
+    user_datas.get(user).tweets.push(id);
     id += 1;
 
     return id - 1;
