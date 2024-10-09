@@ -41,7 +41,9 @@ class TweetDemonstration : Fragment() {
             })
         })
 
-        tweetViewModel.connectWebSocket(requireContext())
+        if (!WebsocketConnection.connected) {
+            tweetViewModel.connectWebSocket(requireContext())
+        }
 
         // 从布局中找到名为 add_button 的按钮，并将其赋值给 addButton 变量
         val addButton = view.findViewById<Button>(R.id.add_button)
