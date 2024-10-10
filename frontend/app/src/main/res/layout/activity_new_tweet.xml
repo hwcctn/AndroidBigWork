@@ -45,8 +45,15 @@
             android:hint="请输入标题"
             android:padding="8dp"
             android:layout_marginTop="10dp"
-            android:textSize="18sp"
+            android:textCursorDrawable="@null"
+            android:background="@null"
+            android:textSize="16sp"
             />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="2dp"
+            android:background="@android:color/darker_gray" />
         <!-- 动态内容输入框 -->
         <EditText
             android:id="@+id/editTextContent"
@@ -55,9 +62,17 @@
             android:hint="写点什么吧"
             android:gravity="top"
             android:minLines="5"
-
-            android:padding="8dp" />
+            android:textCursorDrawable="@null"
+            android:textSize="16sp"
+            android:padding="8dp"
+            android:background="@null" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="2dp"
+            android:background="@android:color/darker_gray" />
     </LinearLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"
