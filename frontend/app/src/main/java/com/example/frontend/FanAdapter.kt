@@ -35,7 +35,13 @@ class FanAdapter (private val userList: List<FanListUser>) :
         val imageBytes = Base64.decode(user.profilePictureBase64, Base64.DEFAULT)
         val bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
         holder.followButton.text = if (user.isFollowing) "互相关注" else "回关"
-        holder.profileImageView.setImageBitmap(bitmap)
+        if(bitmap==null) {
+            holder.profileImageView.setImageResource(R.drawable.g)
+        }
+        else{
+            holder.profileImageView.setImageBitmap(bitmap)
+        }
+
         holder.usernameTextView.text = user.username
         holder.followButton.setOnClickListener {
             if (user.isFollowing) {

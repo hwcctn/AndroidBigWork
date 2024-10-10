@@ -34,8 +34,13 @@ class FollowingAdapter(private val userList: List<FollowListUser>) :
         val user = userList[position]
 
         val imageBytes = Base64.decode(user.profilePictureBase64, Base64.DEFAULT)
+
         val bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
-        holder.profileImageView.setImageBitmap(bitmap)
+        Log.d(" bitmap", "${bitmap}")
+        if(bitmap==null) {
+            holder.profileImageView.setImageResource(R.drawable.g)
+        }
+        else holder.profileImageView.setImageBitmap(bitmap)
         holder.usernameTextView.text = user.username
 
         holder.unfollowButton.setOnClickListener {
