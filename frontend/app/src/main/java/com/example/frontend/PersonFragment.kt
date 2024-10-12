@@ -29,7 +29,7 @@ import retrofit2.awaitResponse
 class PersonFragment : Fragment() {
     private lateinit var usernameTextView: TextView
     private lateinit var userImage: ImageView
-    private lateinit var progressBar: ProgressBar
+
     private lateinit var userInfoLayout: View // 用户信息的布局
 
     override fun onCreateView(
@@ -40,7 +40,7 @@ class PersonFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_person, container, false)
         usernameTextView = view.findViewById(R.id.usernameTextView)
         userImage = view.findViewById<ImageView>(R.id.userImage)
-        progressBar = view.findViewById(R.id.progressBar)
+
         userInfoLayout = view.findViewById(R.id.userInfoLayout) // 获取用户信息布局
 
         val spaceButton = view.findViewById<Button>(R.id.spaceButton)
@@ -48,12 +48,12 @@ class PersonFragment : Fragment() {
         val fanButton = view.findViewById<Button>(R.id.fanButton)
         val backLoginButton = view.findViewById<Button>(R.id.backLoginButton)
 
-        // 初始化 ProgressBar 和用户信息布局的可见性
-        progressBar.visibility = View.VISIBLE
-        userInfoLayout.visibility = View.GONE
 
-        verifyToken()
+        val sharedPreferences = requireContext().getSharedPreferences("MyAppPrefs", MODE_PRIVATE)
+        val username = sharedPreferences.getString("name", null)
 
+//        verifyToken()
+        loadAvatarFromPreferences(username.toString())
         backLoginButton.setOnClickListener {
             // 获取 SharedPreferences
             val sharedPreferences: SharedPreferences = requireContext().getSharedPreferences("MyAppPrefs", MODE_PRIVATE)
@@ -85,42 +85,42 @@ class PersonFragment : Fragment() {
         return view
     }
 
-    private fun verifyToken() {
-        val sharedPreferences = requireContext().getSharedPreferences("MyAppPrefs", Activity.MODE_PRIVATE)
-        val token = sharedPreferences.getString("token", null)
-
-        if (token != null) {
-            val tokenRequest = VerifyTokenRequest(token)
-
-            // 显示 ProgressBar
-            progressBar.visibility = View.VISIBLE
-
-            // 使用协程发起请求
-            CoroutineScope(Dispatchers.IO).launch {
-                try {
-                    val response = RetrofitInstance.api.verifyToken(tokenRequest).awaitResponse()
-                    withContext(Dispatchers.Main) {
-                        // 隐藏 ProgressBar
-                        progressBar.visibility = View.GONE
-
-                        if (response.isSuccessful) {
-                            val username = response.body()?.content?.username
-                            Log.d("name", username.toString())
-                            loadAvatarFromPreferences(username.toString())
-                        } else {
-                            Log.e("Error", "Failed to verify token: ${response.message()}")
-                        }
-                    }
-                } catch (e: Exception) {
-                    withContext(Dispatchers.Main) {
-                        // 隐藏 ProgressBar
-                        progressBar.visibility = View.GONE
-                        Log.e("Error", "Request failed", e)
-                    }
-                }
-            }
-        }
-    }
+//    private fun verifyToken() {
+//        val sharedPreferences = requireContext().getSharedPreferences("MyAppPrefs", Activity.MODE_PRIVATE)
+//        val token = sharedPreferences.getString("token", null)
+//
+//        if (token != null) {
+//            val tokenRequest = VerifyTokenRequest(token)
+//
+//            // 显示 ProgressBar
+//            progressBar.visibility = View.VISIBLE
+//
+//            // 使用协程发起请求
+//            CoroutineScope(Dispatchers.IO).launch {
+//                try {
+//                    val response = RetrofitInstance.api.verifyToken(tokenRequest).awaitResponse()
+//                    withContext(Dispatchers.Main) {
+//                        // 隐藏 ProgressBar
+//                        progressBar.visibility = View.GONE
+//
+//                        if (response.isSuccessful) {
+//                            val username = response.body()?.content?.username
+//                            Log.d("name", username.toString())
+//                            loadAvatarFromPreferences(username.toString())
+//                        } else {
+//                            Log.e("Error", "Failed to verify token: ${response.message()}")
+//                        }
+//                    }
+//                } catch (e: Exception) {
+//                    withContext(Dispatchers.Main) {
+//                        // 隐藏 ProgressBar
+//                        progressBar.visibility = View.GONE
+//                        Log.e("Error", "Request failed", e)
+//                    }
+//                }
+//            }
+//        }
+//    }
 
     private fun loadAvatarFromPreferences(username: String) {
         val sharedPreferences = requireContext().getSharedPreferences("MyAppPrefs", Activity.MODE_PRIVATE)

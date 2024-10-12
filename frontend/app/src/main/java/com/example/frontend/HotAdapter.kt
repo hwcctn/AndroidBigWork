@@ -65,7 +65,13 @@ class HotAdapter(private val hotItemList: List<HotItem>) :
         holder.timeTextView.text= formatTimestamp(currentItem.date)
 
         getUserImageName(currentItem.sender,holder.profileImageView)
-        getImage(currentItem.images[0],holder)
+        Log.d("fhsl","${currentItem.images}")
+        if(currentItem.images.isEmpty()){
+            holder.imageView.setImageResource(R.drawable.img1)
+        }
+        else {
+            getImage(currentItem.images[0], holder)
+        }
         holder.topPartLayout.setOnClickListener {
             val context = holder.itemView.context
             val intent = Intent(context, HotDetailActivity::class.java).apply {
