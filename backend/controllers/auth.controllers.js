@@ -12,7 +12,6 @@ sessions.set("julia", "julia")
 
 const signIn = (ctx) => {
     const body = ctx.request.body;
-    console.log(ctx.request);
     const password = body.password.toString();
     const username = body.username;
 
@@ -24,7 +23,6 @@ const signIn = (ctx) => {
         sessions.forEach((v, k, m) => { if (v == username) { m.delete(k) } });
         sessions.set(token, username);
         setOk(ctx, { token });
-        console.log(sessions)
     } else if (passwords.get(username) == undefined)
         setErr(ctx, "no such user");
     else
@@ -42,7 +40,7 @@ const signUp = (ctx) => {
         setErr(ctx, "user exists");
     else {
         passwords.set(username, password);
-        user_datas.set(username, { tweets: [], fans: [], follows: [], avatar: avatar ? avatar : null });
+        user_datas.set(username, { tweets: [], fans: [username], follows: [username], avatar: avatar ? avatar : null });
         signIn(ctx);
     }
 };

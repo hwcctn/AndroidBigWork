@@ -4,7 +4,6 @@ let { setOk, setErr, tweets, id, user_datas, connections } = require("./utils");
 
 const pushTweet = (token, tweet) => {
     const user = auth(token);
-    console.log(`id: ${id}`);
     tweets.push(tweet);
     user_datas.get(user).tweets.push(id);
     id += 1;
@@ -55,6 +54,7 @@ const newTweet = (ctx) => {
 
         if (content && title && tags && images) {
             const tweet = {
+                id,
                 date: Date.now(),
                 title,
                 sender,
@@ -63,7 +63,6 @@ const newTweet = (ctx) => {
                 images,
             };
             pushTweet(token, tweet);
-            console.log(tweets)
 
             pushUpdate(tweet);
         } else {
@@ -73,7 +72,6 @@ const newTweet = (ctx) => {
 
         setOk(ctx, id);
     } catch (e) {
-        console.log(e);
         setErr(ctx, "unknown error");
     }
 
@@ -82,16 +80,12 @@ const newTweet = (ctx) => {
 // push update to all the connections
 const pushUpdate = (tweet) => {
     const fans = user_datas.get(tweet.sender).fans;
-    console.log(`connections: `, connections)
-    console.log(`fans: `, fans)
     fans.forEach(fan => {
         const conn = connections.get(fan);
         if (!conn) return;
         try {
-            conn.send(JSON.stringify(tweet));
-            console.log(`pushed to ${fan}`);
+            conn.send(JSON.stringify(tweet));   
         } catch (e) {
-            console.log(e);
             connections.delete(fan);
         }
     });
@@ -139,9 +133,6 @@ const beClicked = (ctx) => {
         if (token) {
             const sender = auth(token);
             const tweet = tweets[tweet_id];
-            console.log(tweets);
-            console.log(`tweet_id: ${tweet_id}`);
-            console.log(`tweet: ${tweet}`);
             if (tweet) {
                 tweet.viewd += 1;
             } else {
@@ -153,7 +144,6 @@ const beClicked = (ctx) => {
             return;
         }
     } catch (e) {
-        console.log(e);
         setErr(ctx, "Unauthorized", 401);
     }
 }
