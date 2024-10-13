@@ -7,8 +7,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitInstance {
 
-    private const val BASE_URL = "http://10.33.13.3:8001"
-//    private const val BASE_URL = "http://192.168.199.106:8001"
+    private const val BASE_URL = "http://10.70.143.168:8001"
+//    private const val BASE_URL = "http://192.168.31.91:8001"
 
     private val retrofit: Retrofit by lazy {
         Retrofit.Builder()
@@ -24,8 +24,8 @@ object RetrofitInstance {
 
 object ImageRetrofitInstance {
 
-    private const val IMAGE_URL = "http://10.33.13.3:8000"
-//    private const val IMAGE_URL = "http://192.168.199.106:8000"
+    private const val IMAGE_URL = "http://10.70.143.168:8000"
+//    private const val IMAGE_URL = "http://192.168.31.91:8000"
 
     private val retrofit: Retrofit by lazy {
         Retrofit.Builder()

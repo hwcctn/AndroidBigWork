@@ -36,7 +36,7 @@ object WebsocketConnection {
         }
 
         val request = Request.Builder()
-            .url("wss://10.33.13.3/api/v1/user/listen")
+            .url("wss://10.70.143.168:8001/api/v1/user/listen")
             .addHeader("token", token.toString())
             .build()
 

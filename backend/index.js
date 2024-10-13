@@ -21,5 +21,5 @@ App.use(parser())
 App.ws.use(ws_router.routes()).use(ws_router.allowedMethods());
 
 App.listen(port, () => {
-    console.log(`🚀 Server listening http://127.0.0.1:${port}/ 🚀`);
+    console.log(`🚀 Server listening http://0.0.0.0:${port}/ 🚀`);
 });

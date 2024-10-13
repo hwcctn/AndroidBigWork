@@ -11,6 +11,7 @@ data class TweetItem(
 )
 
 data class Tweet(
+    val id: Int = 1,
     val date: Long,
     val title: String,
     val sender: String,

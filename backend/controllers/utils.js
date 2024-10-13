@@ -28,25 +28,25 @@ const Errors = {
 var user_datas = new Map();
 
 user_datas.set('fin', {
-    fans: [],
-    follows: ['julia'],
+    fans: ['fin'],
+    follows: ['fin', 'julia'],
     // id of tweets
     tweets: [0, 2],
-    avatar: "fine",
+    avatar: null,
 });
 
 user_datas.set('julia', {
-    fans: ['fin'],
-    follows: [],
+    fans: ['julia', 'fin'],
+    follows: ['julia'],
     // id of tweets
     tweets: [1],
     avatar: null,
 });
 user_datas.set('well', {
-    fans: ['fin'],
-    follows: [],
+    fans: ['well', 'fin'],
+    follows: ['well'],
     // id of tweets
-    tweets: [1],
+    tweets: [],
     avatar: null,
 });
 
