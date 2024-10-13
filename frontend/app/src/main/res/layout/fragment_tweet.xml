@@ -3,16 +3,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/dynamic"
+    android:layout_marginTop="28dp"
     tools:context=".TweetDemonstration">
 
-
-    <!-- RecyclerView 用于展示卡片列表 -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+    <!-- SwipeRefreshLayout 用于实现下拉刷新 -->
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="8dp" />
+        android:layout_height="match_parent">
+
+        <!-- RecyclerView 用于展示卡片列表 -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="8dp" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
     <!-- 添加一个固定的按钮，位于屏幕底部中间 -->
     <Button
         android:id="@+id/add_button"
@@ -22,7 +29,6 @@
         android:layout_marginBottom="16dp"
         android:backgroundTint="@color/gray"
         android:text="+"
-        android:textSize="25dp"
-        />
+        android:textSize="25sp" />
 
 </FrameLayout>

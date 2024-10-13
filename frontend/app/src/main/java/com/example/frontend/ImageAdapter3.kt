@@ -26,11 +26,12 @@ class ImageAdapter3(private val imageUrls: List<String>) : RecyclerView.Adapter<
     }
 
     override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
+
         val imageUrl = imageUrls[position]
         ImageRetrofitInstance.api.getImage(imageUrl.toString()).enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {
-                    Log.d("fhsk1","1")
+
                     val inputStream: InputStream? = response.body()?.byteStream()
                     val bitmap = BitmapFactory.decodeStream(inputStream)
 

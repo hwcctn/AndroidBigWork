@@ -145,6 +145,12 @@ class LoginActivity : AppCompatActivity() {
                         }
 
                     } else {
+                        val bitmap = BitmapFactory.decodeResource(resources, R.drawable.g)
+                        val imageBase64 = bitmapToBase64(bitmap)
+                        val sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE)
+                        val editor = sharedPreferences.edit()
+                        editor.putString("avatar", imageBase64)
+                        editor.apply()
                         Log.e("Error", "Failed to get avatar: ${response.message()}")
                     }
                 }

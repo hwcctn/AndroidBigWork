@@ -85,42 +85,6 @@ class PersonFragment : Fragment() {
         return view
     }
 
-//    private fun verifyToken() {
-//        val sharedPreferences = requireContext().getSharedPreferences("MyAppPrefs", Activity.MODE_PRIVATE)
-//        val token = sharedPreferences.getString("token", null)
-//
-//        if (token != null) {
-//            val tokenRequest = VerifyTokenRequest(token)
-//
-//            // 显示 ProgressBar
-//            progressBar.visibility = View.VISIBLE
-//
-//            // 使用协程发起请求
-//            CoroutineScope(Dispatchers.IO).launch {
-//                try {
-//                    val response = RetrofitInstance.api.verifyToken(tokenRequest).awaitResponse()
-//                    withContext(Dispatchers.Main) {
-//                        // 隐藏 ProgressBar
-//                        progressBar.visibility = View.GONE
-//
-//                        if (response.isSuccessful) {
-//                            val username = response.body()?.content?.username
-//                            Log.d("name", username.toString())
-//                            loadAvatarFromPreferences(username.toString())
-//                        } else {
-//                            Log.e("Error", "Failed to verify token: ${response.message()}")
-//                        }
-//                    }
-//                } catch (e: Exception) {
-//                    withContext(Dispatchers.Main) {
-//                        // 隐藏 ProgressBar
-//                        progressBar.visibility = View.GONE
-//                        Log.e("Error", "Request failed", e)
-//                    }
-//                }
-//            }
-//        }
-//    }
 
     private fun loadAvatarFromPreferences(username: String) {
         val sharedPreferences = requireContext().getSharedPreferences("MyAppPrefs", Activity.MODE_PRIVATE)

@@ -72,8 +72,13 @@ class HotDetailActivity : AppCompatActivity() {
                         contentTextView.text = content.joinToString(",")
                         timeTextView.text= formatTimestamp(time)
                         Log.d("images","${images}")
-
-                        imageAdapter = ImageAdapter3(images)
+                        if(images.isEmpty()){
+                            val img: List<String> =listOf("img")
+                            imageAdapter = ImageAdapter3(img)
+                        }
+                        else {
+                            imageAdapter = ImageAdapter3(images)
+                        }
                         imagesRecyclerView.adapter = imageAdapter
 
                     }else {
@@ -111,7 +116,7 @@ class HotDetailActivity : AppCompatActivity() {
         })
     }
     private fun getUserImage(imageName: String){
-        Log.d("imgName",imageName)
+
         ImageRetrofitInstance.api.getImage(imageName)
             .enqueue(object : Callback<ResponseBody> {
                 override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {

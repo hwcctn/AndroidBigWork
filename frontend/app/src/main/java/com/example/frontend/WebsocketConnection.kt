@@ -66,6 +66,7 @@ object WebsocketConnection {
 
                 _tweets.add(0, tweet)
                 tweets.postValue(_tweets)
+                Log.d("mmmenen","怎么办${ _tweets}")
             }
 
             override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {

@@ -8,10 +8,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.frontend.api.models.FollowsResponse
 import com.example.frontend.api.models.TweetResponse
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -52,14 +54,16 @@ class HotFragment : Fragment() {
     }
 
     private fun startView() {
-        //请求关注列表
-        getFollowsList()
+        lifecycleScope.launch {
 
-        //请求item
-        fetchHotTweets()
+            getFollowsList()
+
+
+            fetchHotTweets()
+        }
     }
 
-    private fun getFollowsList() {
+    suspend fun getFollowsList() {
         val sharedPreferences = requireContext().getSharedPreferences("MyAppPrefs", MODE_PRIVATE)
         val username = sharedPreferences.getString("name", null)
 
@@ -84,7 +88,7 @@ class HotFragment : Fragment() {
             })
     }
 
-    private fun fetchHotTweets() {
+    suspend fun fetchHotTweets() {
         RetrofitInstance.api.getHotTweets().enqueue(object : Callback<TweetResponse> {
 
             override fun onResponse(call: Call<TweetResponse>, response: Response<TweetResponse>) {
@@ -98,6 +102,7 @@ class HotFragment : Fragment() {
                             val hotItemList = tweetResponse.content.map { tweetObject ->
                                 var isFollows = false
                                 if (tweetObject.tweet.sender in followsList) {
+
                                     isFollows = true
                                 }
                                 Log.d("ID", "${tweetObject.id}")

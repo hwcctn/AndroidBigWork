@@ -74,97 +74,81 @@ class RegisterActivity :AppCompatActivity(){
             selectedImage?.let { uri ->
                 avatar = getFileName(uri)
             }
-
-            if (username.isNotEmpty() && password.isNotEmpty()&&passwordcf.isNotEmpty()) {
+            if (username.isNotEmpty() && password.isNotEmpty() && passwordcf.isNotEmpty()) {
                 if (password == passwordcf) {
-                    upload_img(object : UploadCallback {
-                        override fun onSuccess(filename: String) {
-                            // 处理成功上传后的逻辑
-                            Log.d("Upload", "Upload successful, filename: $filename")
-                            val registerRequest = RegisterRequest(username, password,avatar)
+                    if (selectedImage != null) {
+                        avatar = getFileName(selectedImage!!)
+                        uploadImageAndRegister(username, password, avatar)
+                    } else {
 
-                            RetrofitInstance.api.register(registerRequest)
-                                .enqueue(object : Callback<RegisterResponse> {
-
-                                    override fun onResponse(
-                                        call: Call<RegisterResponse>,
-                                        response: Response<RegisterResponse>
-                                    ) {
-
-                                        if (response.isSuccessful) {
-                                            // 获取服务器返回的 registerresponse 数据
-                                            val registerResponse = response.body()
-
-
-                                            if (registerResponse != null && registerResponse.content.token.isNotEmpty()) {
-
-                                                startActivity(
-                                                    Intent(
-                                                        this@RegisterActivity,
-                                                        LoginActivity::class.java
-                                                    )
-                                                )
-                                            } else {
-
-                                                Toast.makeText(
-                                                    this@RegisterActivity,
-                                                    "注册失败: ${registerResponse?.reuslt}",
-                                                    Toast.LENGTH_SHORT
-                                                ).show()
-                                            }
-                                        } else {
-
-                                            Toast.makeText(
-                                                this@RegisterActivity,
-                                                "注册失败: ${response.message()}",
-                                                Toast.LENGTH_SHORT
-                                            ).show()
-                                        }
-                                    }
-
-
-                                    override fun onFailure(call: Call<RegisterResponse>, t: Throwable) {
-
-                                        Toast.makeText(
-                                            this@RegisterActivity,
-                                            "网络错误: ${t.message}",
-                                            Toast.LENGTH_SHORT
-                                        ).show()
-                                    }
-                                })
-                        }
-
-                        override fun onFailure() {
-                            // 处理上传失败后的逻辑
-                            Log.d("Upload", "Upload failed")
-                        }
-                    })
-
-                }
-                else{
-                    // 密码不相同提示
-                    Toast.makeText(
-                        this@RegisterActivity,
-                        "两次密码输入不一样",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
+                        val registerRequest = RegisterRequest(username, password, avatar)
+                        registerUser(registerRequest)
+                    }
                 } else {
-                    // 如果用户名或密码为空，提示用户输入
-                    Toast.makeText(
-                        this@RegisterActivity,
-                        "用户名或密码不能为空",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    Toast.makeText(this, "两次密码输入不一样", Toast.LENGTH_SHORT).show()
                 }
+            } else {
+                Toast.makeText(this, "用户名或密码不能为空", Toast.LENGTH_SHORT).show()
             }
+        }
 
-        // 跳转到 RegisterActivity
+
+
         signInTextView.setOnClickListener {
             val intent = Intent(this@RegisterActivity, LoginActivity::class.java)
             startActivity(intent)
         }
 }
+    private fun uploadImageAndRegister(username: String, password: String, avatar: String) {
+        upload_img(object : UploadCallback {
+            override fun onSuccess(filename: String) {
+                // 图片上传成功后，使用返回的文件名继续注册
+                val registerRequest = RegisterRequest(username, password, filename)
+                registerUser(registerRequest)
+            }
+
+            override fun onFailure() {
+                // 图片上传失败，显示错误信息
+                Log.d("Upload", "Upload failed")
+            }
+        })
+    }
+    private fun registerUser(registerRequest: RegisterRequest) {
+        RetrofitInstance.api.register(registerRequest)
+            .enqueue(object : Callback<RegisterResponse> {
+                override fun onResponse(
+                    call: Call<RegisterResponse>,
+                    response: Response<RegisterResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        val registerResponse = response.body()
+                        if (registerResponse != null && registerResponse.content.token.isNotEmpty()) {
+                            startActivity(Intent(this@RegisterActivity, LoginActivity::class.java))
+                        } else {
+                            Toast.makeText(
+                                this@RegisterActivity,
+                                "注册失败: ${registerResponse?.reuslt}",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    } else {
+                        Toast.makeText(
+                            this@RegisterActivity,
+                            "注册失败: ${response.message()}",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<RegisterResponse>, t: Throwable) {
+                    Toast.makeText(
+                        this@RegisterActivity,
+                        "网络错误: ${t.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            })
+    }
     private fun pickImageFromGallery() {
         val intent = Intent(Intent.ACTION_PICK)
         intent.type = "image/*"
