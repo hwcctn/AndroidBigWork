@@ -37,7 +37,7 @@ class TweetDemonstration : Fragment() {
         tweetViewModel.tweets.observe(viewLifecycleOwner) { tweets ->
                 adapter.updateData(tweets.map { tweet ->
                     Log.d("tweet", "${tweet}")
-                    DemonstrationCardItem(tweet.sender, tweet.title, tweet.content, tweet.images,tweet.date)
+                    DemonstrationCardItem(tweet.id,tweet.sender, tweet.title, tweet.content, tweet.images,tweet.date)
                 })
             swipeRefreshLayout.isRefreshing = false
         }
@@ -47,7 +47,7 @@ class TweetDemonstration : Fragment() {
             tweetViewModel.tweets.observe(viewLifecycleOwner) { tweets ->
                 adapter.updateData(tweets.map { tweet ->
                     Log.d("tweet", "${tweet}")
-                    DemonstrationCardItem(tweet.sender, tweet.title, tweet.content, tweet.images,tweet.date)
+                    DemonstrationCardItem(tweet.id,tweet.sender, tweet.title, tweet.content, tweet.images,tweet.date)
                 })
                 swipeRefreshLayout.isRefreshing = false
             }

@@ -9,6 +9,7 @@ import okhttp3.OkHttpClient
 
 
 data class Tweet(
+    val id:Int,
     val date: Long,
     val title: String,
     val sender: String,

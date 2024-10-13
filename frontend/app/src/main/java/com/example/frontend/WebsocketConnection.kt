@@ -50,6 +50,7 @@ object WebsocketConnection {
                 Log.d("WebSocket Status", "Received: $text")
                 val jsonObject = JSONObject(text)
                 val tweet = Tweet(
+                    id=jsonObject.getInt("id"),
                     date = jsonObject.getLong("date"),
                     title = jsonObject.getString("title"),
                     sender = jsonObject.getString("sender"),
@@ -63,6 +64,7 @@ object WebsocketConnection {
                         List(array.length()) { array.getString(it) }
                     }
                 )
+
 
                 _tweets.add(0, tweet)
                 tweets.postValue(_tweets)

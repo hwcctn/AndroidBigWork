@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import android.util.Log
 import android.view.View
+import android.widget.ImageButton
 import android.widget.ProgressBar
 import androidx.lifecycle.lifecycleScope
 import com.example.frontend.api.models.AvatarResponse
@@ -34,7 +35,10 @@ class FollowingListActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_following_list)
-
+        val backButton = findViewById<ImageButton>(R.id.backButton)
+        backButton.setOnClickListener {
+            finish()
+        }
         followingRecyclerView = findViewById(R.id.recyclerView_following)
         progressBar = findViewById(R.id.progressBar)
         followingRecyclerView.layoutManager = LinearLayoutManager(this)

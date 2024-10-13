@@ -45,6 +45,7 @@ class HotAdapter(private val hotItemList: List<HotItem>) :
         //        val imagesRecyclerView: RecyclerView = itemView.findViewById(R.id.imagesRecyclerView)
         val imageView: ImageView = itemView.findViewById(R.id.imagesImageView)
         val followButton: ImageButton = itemView.findViewById(R.id.followButton)
+        val likeButton: ImageButton = itemView.findViewById(R.id.likeButton)
         val topPartLayout: ConstraintLayout = itemView.findViewById(R.id.topPartLayout)
         val timeTextView: TextView = itemView.findViewById(R.id.TimeTextView)
         val progressBar: ProgressBar = itemView.findViewById(R.id.progressBar)
@@ -101,6 +102,19 @@ class HotAdapter(private val hotItemList: List<HotItem>) :
                 unfollowUser(holder, username, position)
             } else {
                 followUser(holder, username, position)
+            }
+        }
+        var isLiked = false
+
+        holder.likeButton.setOnClickListener {
+
+            isLiked = !isLiked
+
+
+            if (isLiked) {
+                holder.likeButton.setImageResource(R.drawable.liked)
+            } else {
+                holder.likeButton.setImageResource(R.drawable.like)
             }
         }
     }

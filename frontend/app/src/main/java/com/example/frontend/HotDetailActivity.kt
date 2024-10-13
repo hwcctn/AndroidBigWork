@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Base64
 import android.util.Log
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -37,6 +38,11 @@ class HotDetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_hot_detail)
+
+        val backButton = findViewById<ImageButton>(R.id.backButton)
+        backButton.setOnClickListener {
+            finish()
+        }
         // 更新UI
         profileImageView= findViewById<ImageView>(R.id.detailProfileImageView)
         nameTextView = findViewById<TextView>(R.id.detailNameTextView)
@@ -44,10 +50,9 @@ class HotDetailActivity : AppCompatActivity() {
         contentTextView = findViewById<TextView>(R.id.detailContentTextView)
         timeTextView=findViewById<TextView>(R.id.TimeTextView)
         imagesRecyclerView = findViewById(R.id.imagesRecyclerView)
-
         // 设置布局管理器
         imagesRecyclerView.layoutManager = LinearLayoutManager(this)
-        // 获取传递过来的数据
+
         val id = intent.getStringExtra("id")
         Log.d("id","${id}")
             requestTweetsById(id.toString()) // 这里传入的是 Int 类型

@@ -1,18 +1,16 @@
 package com.example.frontend
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Context
-import android.graphics.Bitmap
+import android.content.Intent
 import android.graphics.BitmapFactory
-import android.util.Base64
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.frontend.api.models.AvatarResponse
 import retrofit2.Call
@@ -37,6 +35,7 @@ class DemonstrationCardAdapter(private var items: List<DemonstrationCardItem>, p
         val title: TextView = view.findViewById(R.id.text_title)
         val description: TextView = view.findViewById(R.id.text_description)
         val  imageImageView: ImageView = view.findViewById(R.id. imageImageView)
+        val topPartLayout = view.findViewById<LinearLayout>(R.id.topPartLayout)
 
 
     }
@@ -60,7 +59,16 @@ class DemonstrationCardAdapter(private var items: List<DemonstrationCardItem>, p
         else{
             getImage(imageUrls[0].toString(),holder.imageImageView)
         }
+        holder.topPartLayout.setOnClickListener {
+            val context = holder.itemView.context
+            val intent = Intent(context, HotDetailActivity::class.java).apply {
+                Log.d("Id", "${item.id}")
+                putExtra("id", item.id.toString())
 
+
+            }
+            context.startActivity(intent)
+        }
 
 
 
