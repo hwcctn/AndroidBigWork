@@ -63,6 +63,6 @@
             android:id="@+id/recycler_view_images"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"/>
+            android:orientation="horizontal" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>

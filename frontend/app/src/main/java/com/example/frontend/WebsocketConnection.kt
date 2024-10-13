@@ -13,36 +13,36 @@ import org.json.JSONObject
 
 @SuppressLint("StaticFieldLeak")
 object WebsocketConnection {
-    private lateinit var context: Context
     var connected: Boolean = false
-    lateinit var webSocket: WebSocket
+    var _tweets: MutableList<Tweet> = ArrayList()
+    private lateinit var webSocket: WebSocket
 
-    fun initialize(context: Context, client: OkHttpClient, tweets: MutableLiveData<List<Tweet>>) {
-        this.context = context
-        connectWebSocket(client, tweets)
+    fun establish(context: Context, client: OkHttpClient, tweets: MutableLiveData<List<Tweet>>) {
+        if (connected) return
+
+        connectWebSocket(context,client, tweets)
+        connected = true
     }
 
-    fun connectWebSocket(client: OkHttpClient, tweets: MutableLiveData<List<Tweet>>) {
+    private fun connectWebSocket(context: Context, client: OkHttpClient, tweets: MutableLiveData<List<Tweet>>) {
         // 从 SharedPreferences 获取 token
         val sharedPreferences = context.getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
         val token = sharedPreferences.getString("token", null)
-        Log.d("soketr_token", "$token")
+        Log.d("websocket using token", "$token")
 
         if (token == null) {
-            Log.e("WebSocket Status", "Token is null, cannot connect.")
+            Log.e("WebSocket Error", "Token is null, cannot connect.")
             return
         }
 
         val request = Request.Builder()
             .url("wss://10.70.143.168:8001/api/v1/user/listen")
-            // 记得改token, 这里默认用了fin
             .addHeader("token", token.toString())
             .build()
 
-        WebsocketConnection.webSocket = client.newWebSocket(request, object : WebSocketListener() {
+        webSocket = client.newWebSocket(request, object : WebSocketListener() {
             override fun onOpen(webSocket: WebSocket, response: Response) {
                 Log.d("WebSocket Status", "Connected")
-                connected = true
             }
 
             override fun onMessage(webSocket: WebSocket, text: String) {
@@ -63,12 +63,14 @@ object WebsocketConnection {
                         List(array.length()) { array.getString(it) }
                     }
                 )
-                tweets.postValue(tweets.value.orEmpty() + tweet)
+
+                _tweets.add(0, tweet)
+                tweets.postValue(_tweets)
             }
 
             override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
                 connected = false
-                Log.e("FUCK", "Unable to connect")
+                Log.e("Websocket Error", "Unable to connect")
                 t.printStackTrace()
             }
 

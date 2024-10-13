@@ -13,6 +13,7 @@ import com.example.frontend.api.models.VerifyTokenResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+
 class MainActivity : AppCompatActivity() {
     private var selectedTab: Int = 1
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,31 +22,31 @@ class MainActivity : AppCompatActivity() {
 //         检查 token 是否存在
         val sharedPreferences: SharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE)
         val token = sharedPreferences.getString("token", null)
-        Log.d("MIan","${token}")
+        Log.d("MIan", "$token")
         if (token.isNullOrEmpty()) {
             // 如果 token 不存在，跳转到登录页面
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
             finish() // 结束当前活动，防止用户返回
             return
+        } else {
+            verifyToken(token)
         }
-        else{
-            verifyToken(token,)
-
-        }
+        Log.d("setContentView", "Starting")
         setContentView(R.layout.activity_main)
+        Log.d("setContentView", "Completed")
         //绑定控件和布局
         val hotLayout: LinearLayout = findViewById(R.id.hotLayout)
         val dynamicLayout: LinearLayout = findViewById(R.id.dynamicLayout)
         val personLayout: LinearLayout = findViewById(R.id.personLayout)
 
-        var hotText: TextView = findViewById(R.id.hot_tx);
-        var dynamicText: TextView = findViewById(R.id.dynamic_tx);
-        var personText: TextView = findViewById(R.id.person_tx);
+        var hotText: TextView = findViewById(R.id.hot_tx)
+        var dynamicText: TextView = findViewById(R.id.dynamic_tx)
+        var personText: TextView = findViewById(R.id.person_tx)
         //设置默认界面为HotFragment
         supportFragmentManager.beginTransaction()
             .setReorderingAllowed(true)
-            .replace(R.id.fragment_container,HotFragment())
+            .replace(R.id.fragment_container, HotFragment())
             .commit()
 
         hotLayout.setOnClickListener {
@@ -54,14 +55,14 @@ class MainActivity : AppCompatActivity() {
                 //设置界面
                 supportFragmentManager.beginTransaction()
                     .setReorderingAllowed(true)
-                    .replace(R.id.fragment_container,HotFragment())
+                    .replace(R.id.fragment_container, HotFragment())
                     .commit()
 
                 // 设置其他按钮为未选中状态
-                dynamicLayout.setBackgroundResource(R.drawable.front_border);
-                personLayout.setBackgroundResource(R.drawable.front_border);
+                dynamicLayout.setBackgroundResource(R.drawable.front_border)
+                personLayout.setBackgroundResource(R.drawable.front_border)
                 // 设置 home 按钮的选中状态
-                hotLayout.setBackgroundResource(R.drawable.front_border_select);
+                hotLayout.setBackgroundResource(R.drawable.front_border_select)
                 selectedTab = 1
             }
         }
@@ -75,10 +76,10 @@ class MainActivity : AppCompatActivity() {
                     .commit()
 
                 // 设置其他按钮为未选中状态
-                hotLayout.setBackgroundResource(R.drawable.front_border);
-                personLayout.setBackgroundResource(R.drawable.front_border);
+                hotLayout.setBackgroundResource(R.drawable.front_border)
+                personLayout.setBackgroundResource(R.drawable.front_border)
                 // 设置 home 按钮的选中状态
-                dynamicLayout.setBackgroundResource(R.drawable.front_border_select);
+                dynamicLayout.setBackgroundResource(R.drawable.front_border_select)
                 selectedTab = 2
             }
         }
@@ -92,20 +93,25 @@ class MainActivity : AppCompatActivity() {
                     .commit()
 
                 // 设置其他按钮为未选中状态
-                hotLayout.setBackgroundResource(R.drawable.front_border);
-                dynamicLayout.setBackgroundResource(R.drawable.front_border);
+                hotLayout.setBackgroundResource(R.drawable.front_border)
+                dynamicLayout.setBackgroundResource(R.drawable.front_border)
                 // 设置 home 按钮的选中状态
-                personLayout.setBackgroundResource(R.drawable.front_border_select);
+                personLayout.setBackgroundResource(R.drawable.front_border_select)
                 selectedTab = 3
             }
         }
 
 
     }
-    private fun verifyToken(token: String){
-        val verifyTokenRequest =VerifyTokenRequest(token)
-        RetrofitInstance.api.verifyToken(verifyTokenRequest).enqueue(object :Callback<VerifyTokenResponse>{
-                override fun onResponse(call: Call<VerifyTokenResponse>, response: Response<VerifyTokenResponse>) {
+
+    private fun verifyToken(token: String) {
+        val verifyTokenRequest = VerifyTokenRequest(token)
+        RetrofitInstance.api.verifyToken(verifyTokenRequest)
+            .enqueue(object : Callback<VerifyTokenResponse> {
+                override fun onResponse(
+                    call: Call<VerifyTokenResponse>,
+                    response: Response<VerifyTokenResponse>
+                ) {
                     if (response.isSuccessful) {
                         val username = response.body()?.content?.username
                         Log.d("name", username.toString())
@@ -137,6 +143,7 @@ class MainActivity : AppCompatActivity() {
                 }
             })
     }
+
     private fun navigateToLogin() {
         val intent = Intent(this, LoginActivity::class.java)
         startActivity(intent)

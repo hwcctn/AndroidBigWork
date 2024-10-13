@@ -5,5 +5,4 @@ data class CardItem(
     val title: String,
     val content:List<String>,
     val images:List<String>
-
 )

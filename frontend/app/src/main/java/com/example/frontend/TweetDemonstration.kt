@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
@@ -23,27 +22,25 @@ class TweetDemonstration : Fragment() {
         super.onCreate(savedInstanceState)
         // 加载 fragment_tweet.xml 布局
         val view = inflater.inflate(R.layout.fragment_tweet, container, false)
+        var context = requireContext()
 
         // 获取 RecyclerView
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        recyclerView.layoutManager = LinearLayoutManager(context)
 
         // 设置适配器
-        val adapter = CardAdapter(emptyList(),requireContext())
+        val adapter = DemonstrationCardAdapter(emptyList(), context)
         recyclerView.adapter = adapter
 
-        Log.e("FUCK", "hello?")
         // 观察 ViewModel 中的 tweets 数据
-        tweetViewModel.tweets.observe(viewLifecycleOwner, Observer { tweets ->
-            // 条目在这改
-            adapter.updateData(tweets.map { tweet ->
-                CardItem(tweet.sender,tweet.title, tweet.content,tweet.images)
-            })
-        })
-
-        if (!WebsocketConnection.connected) {
-            tweetViewModel.connectWebSocket(requireContext())
+        tweetViewModel.tweets.observe(viewLifecycleOwner) { tweets ->
+                adapter.updateData(tweets.map { tweet ->
+                    Log.d("tweet", tweet.toString())
+                    CardItem(tweet.sender, tweet.title, tweet.content, tweet.images)
+                })
         }
+        tweetViewModel.establish(context)
+//        tweetViewModel.connectWebSocket(context)
 
         // 从布局中找到名为 add_button 的按钮，并将其赋值给 addButton 变量
         val addButton = view.findViewById<Button>(R.id.add_button)
@@ -57,9 +54,4 @@ class TweetDemonstration : Fragment() {
         return view
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        // 确保 ViewModel 在视图创建后进行 WebSocket 连接
-        tweetViewModel.connectWebSocket(requireContext())
-    }
 }
